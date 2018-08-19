@@ -1,15 +1,7 @@
 {
-  "name": "pnlanalyzer",
-  "scripts": {
-  },
-  "env": {
-  },
-  "formation": {
-  },
+  "name": "PNL Analyzer",
+  "description": "A Web Application that allows the upload and analysis of PNL Files",
   "addons": [
-
-  ],
-  "buildpacks": [
-
+    "heroku-postgresql"
   ]
 }
