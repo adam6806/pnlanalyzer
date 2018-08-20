@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer.security;
+package com.github.adam6806.pnlanalyzer.security.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

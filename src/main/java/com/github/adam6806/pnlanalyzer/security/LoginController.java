@@ -1,5 +1,7 @@
 package com.github.adam6806.pnlanalyzer.security;
 
+import com.github.adam6806.pnlanalyzer.security.user.User;
+import com.github.adam6806.pnlanalyzer.security.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,12 +1,10 @@
-package com.github.adam6806.pnlanalyzer.security;
-
-import org.springframework.security.core.GrantedAuthority;
+package com.github.adam6806.pnlanalyzer.security.role;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "role")
-public class Role implements GrantedAuthority {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
@@ -28,11 +26,5 @@ public class Role implements GrantedAuthority {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-
-    @Override
-    public String getAuthority() {
-        return role;
     }
 }
