@@ -29,4 +29,11 @@ public class HomeController {
         modelAndView.setViewName("home");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
+    public ModelAndView getAccessDenied() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("access-denied");
+        return modelAndView;
+    }
 }

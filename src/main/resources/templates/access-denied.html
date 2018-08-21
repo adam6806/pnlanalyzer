@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
 
+<head>
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="row">
+        <div class="col-12 text-center">
+            <p class="text-danger">You do not have access to this page. If you believe that you should please contact an
+                Administrator.</p>
+        </div>
+    </div>
+</section>
 </body>
 </html>
