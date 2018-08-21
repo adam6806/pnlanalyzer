@@ -11,18 +11,20 @@
 <body>
 <section layout:fragment="content">
     <h1 class="h2 border-bottom">Edit User Role</h1>
-    <form action="/admin/edituserrole" method="post">
-        <div class="form-group">
-            <label for="roleSelect">Choose User Role</label>
-            <select class="form-control" id="roleSelect" name="roleSelect">
-                <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"
-                        th:selected="${user.getRoles().contains(role)}"/>
-            </select>
-        </div>
-        <input type="hidden" name="userId" th:value="${user.getId()}"/>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a class="btn btn-danger" href="/admin/usermanagement">Cancel</a>
-    </form>
+    <div class="row">
+        <form class="col-4" action="/admin/edituserrole" method="post">
+            <div class="form-group">
+                <label for="roleSelect">Choose User Role</label>
+                <select class="form-control" id="roleSelect" name="roleSelect">
+                    <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"
+                            th:selected="${user.getRoles().contains(role)}"/>
+                </select>
+            </div>
+            <input type="hidden" name="userId" th:value="${user.getId()}"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-danger" href="/admin/usermanagement">Cancel</a>
+        </form>
+    </div>
 </section>
 </body>
 </html>
