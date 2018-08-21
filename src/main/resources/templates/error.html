@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Admin Page</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <span class="text-danger">An error has occurred at <span
+            th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"/> . Please email asmith0935@gmail.com</span>
+</section>
+</body>
+</html>
