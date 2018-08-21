@@ -14,10 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("userService")
@@ -41,11 +38,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoderConfig.passwordEncoder().encode(user.getPassword()));
         user.setActive(1);
-        Role userRole = roleRepository.findByRole("ROLE_ADMIN");
-        Set<Role> roles = new HashSet<>(Collections.singletonList(userRole));
+        List<Role> allRoles = roleRepository.findAll();
+        List<String> roleStrings = Arrays.asList("ROLE_GUEST", "ROLE_USER", "ROLE_ADMIN");
+        if (allRoles.size() != roleStrings.size()) {
+            for (String roleString : roleStrings) {
+                Role role = new Role();
+                role.setRole(roleString);
+                if (!allRoles.contains(role)) {
+                    Role savedRole = roleRepository.save(role);
+                    allRoles.add(savedRole);
+                }
+            }
+        }
+        Role guestRole = allRoles.stream().filter(role -> role.getRole().equals("ROLE_GUEST")).findFirst().get();
+        Set<Role> roles = new HashSet<>(Collections.singletonList(guestRole));
         user.setRoles(roles);
         userRepository.save(user);
     }

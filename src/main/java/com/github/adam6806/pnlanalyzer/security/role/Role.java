@@ -27,4 +27,13 @@ public class Role {
     public void setRole(String role) {
         this.role = role;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Role) {
+            return ((Role) obj).getRole().equals(this.getRole());
+        } else {
+            return false;
+        }
+    }
 }
