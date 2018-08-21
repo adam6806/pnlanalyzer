@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="h2 border-bottom">Edit User Role</h1>
+    <form action="/admin/edituserrole" method="post">
+        <div class="form-group">
+            <label for="roleSelect">Choose User Role</label>
+            <select class="form-control" id="roleSelect" name="roleSelect">
+                <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"
+                        th:selected="${user.getRoles().contains(role)}"/>
+            </select>
+        </div>
+        <input type="hidden" name="userId" th:value="${user.getId()}"/>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="btn btn-danger" href="/admin/usermanagement">Cancel</a>
+    </form>
+</section>
+</body>
+</html>
