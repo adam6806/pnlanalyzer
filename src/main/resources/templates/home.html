@@ -10,8 +10,10 @@
 
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/webjars/font-awesome/js/all.js"></script>
     <title>PNL Analyzer</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/css/all.css"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
@@ -20,9 +22,9 @@
 <body>
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/home">PNL Analyzer</a>
-    <div class="ml-auto mr-3">
-        <span class="nav-item navbar-text mr-3" th:utext="${userName}"></span>
-        <a class="nav-item nav-text" href="/logout">Logout</a>
+    <div class="ml-auto mr-3 navbar-light">
+        <span class="nav-item nav-text mr-3 navbar-text" sec:authentication="name"></span>
+        <a class="nav-item nav-text navbar-text" href="/logout">Logout</a>
     </div>
 </nav>
 
@@ -32,21 +34,21 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li sec:authorize="hasAuthority('ROLE_USER')" class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <span data-feather="home"></span>
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-building"></i>
                             Companies
                         </a>
                     </li>
                     <li sec:authorize="hasAuthority('ROLE_USER')" class="nav-item">
                         <a class="nav-link" href="#">
-                            <span data-feather="file"></span>
+                            <i class="fa fa-file"></i>
                             PNLs
                         </a>
                     </li>
                     <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file"></span>
-                            User Administration
+                        <a class="nav-link" href="/admin/usermanagement">
+                            <i class="fa fa-user"></i>
+                            User Management
                         </a>
                     </li>
                 </ul>
