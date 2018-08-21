@@ -3,7 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Spring Security Tutorial</title>
+    <title>PNL Analyzer</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
@@ -14,7 +14,11 @@
 </form>
 
 <div class="container">
-    <img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo"/>
+    <div class="row">
+        <div class="col-12 text-center">
+            <img th:src="@{/images/login.jpg}" width="300" height="300" alt="Logo"/>
+        </div>
+    </div>
     <form th:action="@{/login}" method="POST" class="form-signin">
         <h3 class="form-signin-heading" th:text="Welcome"></h3>
         <br/>

@@ -29,4 +29,14 @@ public class HomeController {
         modelAndView.setViewName("home");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
+    public ModelAndView getAccessDenied() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("userName", user.getName() + " " + user.getLastName());
+        modelAndView.setViewName("access-denied");
+        return modelAndView;
+    }
 }
