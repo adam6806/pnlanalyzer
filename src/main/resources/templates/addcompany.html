@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="h2 border-bottom">Add A Company</h1>
+    <div class="row">
+        <form class="col-4" action="/addcompany" method="post">
+            <div class="form-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" class="form-control" id="companyName" name="companyName"></input>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-danger" href="/company">Cancel</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>
