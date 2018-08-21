@@ -1,6 +1,9 @@
 package com.github.adam6806.pnlanalyzer.security.role;
 
+import com.github.adam6806.pnlanalyzer.security.user.User;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -11,6 +14,8 @@ public class Role {
     private long id;
     @Column(name = "role")
     private String role;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     public long getId() {
         return id;

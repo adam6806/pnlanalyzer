@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -48,7 +49,7 @@ public class RoleController {
                 allRoles.removeIf(role -> role.getRole().equals("ROLE_USER"));
                 allRoles.removeIf(role -> role.getRole().equals("ROLE_ADMIN"));
         }
-        user.setRoles(allRoles);
+        user.setRoles(new HashSet<>(allRoles));
         userRepository.save(user);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:usermanagement");

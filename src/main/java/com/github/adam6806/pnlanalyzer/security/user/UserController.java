@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -26,6 +27,14 @@ public class UserController {
         modelAndView.addObject("userName", user.getName() + " " + user.getLastName());
         modelAndView.addObject("users", userRepository.findAll());
         modelAndView.setViewName("admin/usermanagement");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin/usermanagement", method = RequestMethod.POST)
+    public ModelAndView getUserManagement(@RequestParam Long userId) {
+        userRepository.deleteById(userId);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:usermanagement");
         return modelAndView;
     }
 }
