@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer;
+package com.github.adam6806.pnlanalyzer.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,37 +29,37 @@ public class CompanyController {
     public ModelAndView deleteCompany(@RequestParam Long companyId) {
         companyRepository.deleteById(companyId);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:company");
+        modelAndView.setViewName("redirect:/company");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/addcompany", method = RequestMethod.GET)
+    @RequestMapping(value = "/company/addcompany", method = RequestMethod.GET)
     public ModelAndView addCompany() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("addcompany");
+        modelAndView.setViewName("company/addcompany");
         return modelAndView;
     }
 
-    @PostMapping(value = "/addcompany")
+    @PostMapping(value = "/company/addcompany")
     public ModelAndView addCompany(@RequestParam String companyName) {
         Company newCompany = new Company();
         newCompany.setName(companyName);
         companyRepository.save(newCompany);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:company");
+        modelAndView.setViewName("redirect:/company");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/editcompany", method = RequestMethod.GET)
+    @RequestMapping(value = "/company/editcompany", method = RequestMethod.GET)
     public ModelAndView editCompany(@RequestParam Long companyId) {
         Company company = companyRepository.findById(companyId).get();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("company", company);
-        modelAndView.setViewName("editcompany");
+        modelAndView.setViewName("company/editcompany");
         return modelAndView;
     }
 
-    @PostMapping(value = "/editcompany")
+    @PostMapping(value = "/company/editcompany")
     public ModelAndView editCompany(@RequestParam String companyName, @RequestParam Long companyId) {
         Company company = companyRepository.findById(companyId).get();
         company.setName(companyName);
