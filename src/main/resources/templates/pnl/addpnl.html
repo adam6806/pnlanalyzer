@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Add PNL</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="h2 border-bottom">Add A PNL</h1>
+    <div class="row">
+        <form class="col-4" action="/pnl/addpnl" enctype="multipart/form-data" method="post">
+            <div class="form-group">
+                <label for="companyId">Company</label>
+                <select class="form-control" id="companyId" name="companyId">
+                    <option th:each="company : ${companies}" th:value="${company.getId()}"
+                            th:text="${company.getName()}"/>
+                </select>
+            </div>
+            <input type="hidden" name="month" th:value="0">
+            <input type="hidden" name="year" th:value="2010">
+            <div class="form-group">
+                <label for="pnlfile">PNL File</label>
+                <input type="file" class="form-control-file" id="pnlfile" name="pnlfile">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-danger" href="/company">Cancel</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>
