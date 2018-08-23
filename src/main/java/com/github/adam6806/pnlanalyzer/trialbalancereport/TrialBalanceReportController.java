@@ -4,6 +4,11 @@ import com.github.adam6806.pnlanalyzer.company.Company;
 import com.github.adam6806.pnlanalyzer.company.CompanyRepository;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +21,7 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +74,7 @@ public class TrialBalanceReportController {
     }
 
     @RequestMapping(value = "/trialbalancereport/addtrialbalancereport", method = RequestMethod.POST)
-    public ModelAndView addTrialbalancereport(@RequestParam("trialbalancereportfile") MultipartFile trialbalancereportfile, @RequestParam int month, @RequestParam int year, @RequestParam Long companyId) {
+    public ModelAndView addTrialbalancereport(@RequestParam("trialbalancereportfile") MultipartFile trialbalancereportfile, @RequestParam Long companyId) {
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -93,5 +99,57 @@ public class TrialBalanceReportController {
             modelAndView.setViewName("error");
             return modelAndView;
         }
+    }
+
+    @RequestMapping(value = "/trialbalancereport/createjournalentries", method = RequestMethod.GET)
+    public ModelAndView createJournalEntries(@RequestParam Long trialbalancereportId) {
+        ModelAndView modelAndView = new ModelAndView();
+        TrialBalanceReport current = trialBalanceReportRepository.getOne(trialbalancereportId);
+        List<TrialBalanceReport> all = trialBalanceReportRepository.findAllByCompany_Id(current.getCompany().getId());
+        for (TrialBalanceReport trialBalanceReport : all) {
+            if (trialBalanceReport.getDate().compareTo(current.getDate()) >= 0) {
+                all.remove(trialBalanceReport);
+            }
+        }
+        modelAndView.addObject("trialbalancereports", all);
+        modelAndView.addObject("currentTbrId", current.getId());
+        modelAndView.setViewName("trialbalancereport/createjournalentries");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/trialbalancereport/journalentries", method = RequestMethod.GET)
+    public ModelAndView getJournalEntryLineItems(@RequestParam Long prevTbr, @RequestParam Long currentTbr) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<LineItem> lineItems = createJournalEntryLineItems(prevTbr, currentTbr);
+        modelAndView.addObject("lineitems", lineItems);
+        modelAndView.addObject("prevTbrId", prevTbr);
+        modelAndView.addObject("currentTbrId", currentTbr);
+        modelAndView.setViewName("trialbalancereport/lineitem");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/trialbalancereport/downloadjournalentry", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadFile(@RequestParam Long prevTbr, @RequestParam Long currentTbr) {
+
+        TrialBalanceReport current = trialBalanceReportRepository.getOne(currentTbr);
+        List<LineItem> calculatedDifference = createJournalEntryLineItems(prevTbr, currentTbr);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(current.getDate());
+
+        String fileName = calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.YEAR) + "-" + current.getCompany().getName() + ".iif";
+
+        Resource resource = new InputStreamResource(ExcelParser.generateJournalEntries(calculatedDifference, current));
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+    }
+
+    private List<LineItem> createJournalEntryLineItems(Long prevTbr, Long currentTbr) {
+
+        TrialBalanceReport previous = trialBalanceReportRepository.getOne(prevTbr);
+        TrialBalanceReport current = trialBalanceReportRepository.getOne(currentTbr);
+        return DifferenceCalculator.calculateDifference(previous.getLineItems(), current.getLineItems());
     }
 }
