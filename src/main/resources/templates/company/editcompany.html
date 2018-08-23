@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label for="companyName">Company Name</label>
                 <input type="text" class="form-control" id="companyName" name="companyName"
-                       th:value="${company.getName()}"></input>
+                       th:value="${company.getName()}"/>
             </div>
             <input type="hidden" name="companyId" th:value="${company.getId()}"/>
             <button type="submit" class="btn btn-primary">Submit</button>
