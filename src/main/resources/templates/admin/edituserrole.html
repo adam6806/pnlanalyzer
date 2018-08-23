@@ -17,7 +17,7 @@
                 <label for="roleSelect">Choose User Role</label>
                 <select class="form-control" id="roleSelect" name="roleSelect">
                     <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"
-                            th:selected="${user.getRoles().contains(role)}"/>
+                            th:selected="${user.getRoles().contains(role)}"></option>
                 </select>
             </div>
             <input type="hidden" name="userId" th:value="${user.getId()}"/>
