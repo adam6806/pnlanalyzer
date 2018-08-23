@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer.pnl;
+package com.github.adam6806.pnlanalyzer.trialbalancereport;
 
 import com.github.adam6806.pnlanalyzer.company.Company;
 
@@ -7,12 +7,12 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "pnl_file")
-public class Pnl {
+@Table(name = "tbr_file")
+public class TrialBalanceReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pnl_file_id")
+    @Column(name = "tbr_file_id")
     private Long id;
     @Column
     private String name;
@@ -20,7 +20,7 @@ public class Pnl {
     @Temporal(TemporalType.DATE)
     private Date date;
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "pnl_file_id")
+    @JoinColumn(name = "tbr_file_id")
     private Set<LineItem> lineItems;
     @ManyToOne
     @JoinColumn(name = "company_id")

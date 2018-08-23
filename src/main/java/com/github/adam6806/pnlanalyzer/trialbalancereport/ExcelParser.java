@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer.pnl;
+package com.github.adam6806.pnlanalyzer.trialbalancereport;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
