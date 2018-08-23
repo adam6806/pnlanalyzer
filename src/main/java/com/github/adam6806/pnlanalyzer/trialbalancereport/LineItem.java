@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer.pnl;
+package com.github.adam6806.pnlanalyzer.trialbalancereport;
 
 import javax.persistence.*;
 import java.text.DecimalFormat;
