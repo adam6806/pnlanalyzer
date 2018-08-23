@@ -10,9 +10,8 @@
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom" th:if="prevTbrId == null">Line Items</h1>
-    <h1 class="h2 border-bottom" th:if="prevTbrId != null">Journal Entries</h1>
-    <div th:if="prevTbrId != null" class="row mb-2">
+    <h1 class="h2 border-bottom" th:text="${prevTbrId != null} ? 'Journal Entries' : 'Line Items'"></h1>
+    <div class="row mb-2" th:style="${prevTbrId != null} ? 'display:block' : 'display:none'">
         <div class="col">
             <form class="mx-1" action="/trialbalancereport/downloadjournalentry" method="GET">
                 <input type="hidden" name="prevTbr" th:value="${prevTbrId}"/>
@@ -24,8 +23,8 @@
     <div class="row">
         <div class="col">
             <table class="table table-striped table-bordered table-hover init-datatable">
-                <caption th:if="prevTbrId == null">List of Trial Balance Report Line Items</caption>
-                <caption th:if="prevTbrId != null">List of Generated Journal Entries</caption>
+                <caption
+                        th:text="${prevTbrId != null} ? 'List of Generated Journal Entries' : 'List of Trial Balance Report Line Items'"></caption>
                 <thead>
                 <th scope="col">Name</th>
                 <th scope="col">Credit</th>
