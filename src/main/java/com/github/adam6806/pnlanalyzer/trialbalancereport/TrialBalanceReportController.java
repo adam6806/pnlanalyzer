@@ -129,7 +129,7 @@ public class TrialBalanceReportController {
     }
 
     @RequestMapping(value = "/trialbalancereport/downloadjournalentry", method = RequestMethod.GET)
-    public ResponseEntity<Resource> downloadFile(@RequestParam Long prevTbr, @RequestParam Long currentTbr) {
+    public ResponseEntity<Resource> downloadFile(@RequestParam Long prevTbr, @RequestParam Long currentTbr) throws IOException {
 
         TrialBalanceReport current = trialBalanceReportRepository.getOne(currentTbr);
         List<LineItem> calculatedDifference = createJournalEntryLineItems(prevTbr, currentTbr);

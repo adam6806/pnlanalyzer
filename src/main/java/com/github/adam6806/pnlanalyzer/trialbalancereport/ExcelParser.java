@@ -1,5 +1,8 @@
 package com.github.adam6806.pnlanalyzer.trialbalancereport;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 
@@ -43,36 +46,33 @@ public class ExcelParser {
         return lineItemList;
     }
 
-    public static InputStream generateJournalEntries(List<LineItem> lineItems, TrialBalanceReport current) {
+    public static InputStream generateJournalEntries(List<LineItem> lineItems, TrialBalanceReport current) throws IOException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("!TRNS\tTRNSID\tTRNSTYPE\tDATE\tACCNT\tCLASS\tAMOUNT\tDOCNUM\tMEMO\n");
-        stringBuilder.append("!SPL\tSPLID\tTRNSTYPE\tDATE\tACCNT\tCLASS\tAMOUNT\tDOCNUM\tMEMO\n");
-        stringBuilder.append("!ENDTRNS\t\t\t\t\t\t\t\t\n");
+        CSVPrinter csvPrinter = new CSVPrinter(stringBuilder, CSVFormat.TDF.withEscape('\\').withQuoteMode(QuoteMode.NONE));
+        csvPrinter.printRecord("!TRNS", "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "CLASS", "AMOUNT", "DOCNUM", "MEMO");
+        csvPrinter.printRecord("!SPL", "SPLID", "TRNSTYPE", "DATE", "ACCNT", "CLASS", "AMOUNT", "DOCNUM", "MEMO");
+        csvPrinter.printRecord("!ENDTRNS", "", "", "", "", "", "", "", "");
 
         boolean isFirst = true;
         for (int i = 0; i < lineItems.size(); i++) {
             LineItem lineItem = lineItems.get(i);
             if (lineItem.getDescription().startsWith("4")) {
+                String firstColumn = "SPL";
                 if (isFirst) {
                     isFirst = false;
-                    stringBuilder.append("TRNS\t\tGENERAL JOURNAL\t");
-                } else {
-                    stringBuilder.append("SPL\t\tGENERAL JOURNAL\t");
+                    firstColumn = "TRNS";
                 }
-                stringBuilder.append(simpleDateFormat.format(current.getDate())).append("\t");
-                stringBuilder.append(lineItem.getDescription()).append("\t\t");
-
-                DecimalFormat decimalFormat = new DecimalFormat("###.##");
+                DecimalFormat decimalFormat = new DecimalFormat("0.00");
                 Double amount = lineItem.getDebit() - lineItem.getCredit();
-                stringBuilder.append(decimalFormat.format(amount)).append("\t\t\n");
+                csvPrinter.printRecord(firstColumn, "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), lineItem.getDescription(), "", decimalFormat.format(amount), "", "");
             }
         }
 
-        stringBuilder.append("ENDTRNS\t\t\t\t\t\t\t\t");
+        csvPrinter.printRecord("ENDTRNS", "", "", "", "", "", "", "", "");
 
-        return new ByteArrayInputStream(stringBuilder.toString().getBytes());
+        return new ByteArrayInputStream(csvPrinter.getOut().toString().getBytes());
     }
 }
