@@ -65,7 +65,7 @@ public class CompanyController {
         company.setName(companyName);
         companyRepository.save(company);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:company");
+        modelAndView.setViewName("redirect:/company");
         return modelAndView;
     }
 }
