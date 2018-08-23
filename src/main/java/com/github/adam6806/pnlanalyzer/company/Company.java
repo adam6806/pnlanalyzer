@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.company;
 
-import com.github.adam6806.pnlanalyzer.pnl.Pnl;
+import com.github.adam6806.pnlanalyzer.trialbalancereport.TrialBalanceReport;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +19,7 @@ public class Company {
     private String name;
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
-    private Set<Pnl> pnl;
+    private Set<TrialBalanceReport> trialBalanceReport;
 
     public Long getId() {
         return id;
@@ -37,11 +37,11 @@ public class Company {
         this.name = name;
     }
 
-    public Set<Pnl> getPnl() {
-        return pnl;
+    public Set<TrialBalanceReport> getTrialBalanceReport() {
+        return trialBalanceReport;
     }
 
-    public void setPnl(Set<Pnl> pnl) {
-        this.pnl = pnl;
+    public void setTrialBalanceReport(Set<TrialBalanceReport> trialBalanceReport) {
+        this.trialBalanceReport = trialBalanceReport;
     }
 }

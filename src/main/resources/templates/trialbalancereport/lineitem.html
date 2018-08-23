@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Admin Page</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="h2 border-bottom" th:text="${prevTbrId != null} ? 'Journal Entries' : 'Line Items'"></h1>
+    <div class="row mb-2" th:style="${prevTbrId != null} ? 'display:block' : 'display:none'">
+        <div class="col">
+            <form class="mx-1" action="/trialbalancereport/downloadjournalentry" method="GET">
+                <input type="hidden" name="prevTbr" th:value="${prevTbrId}"/>
+                <input type="hidden" name="currentTbr" th:value="${currentTbrId}"/>
+                <button type="submit" class="btn btn-primary">Export to QuickBooks IIF File</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped table-bordered table-hover init-datatable">
+                <caption
+                        th:text="${prevTbrId != null} ? 'List of Generated Journal Entries' : 'List of Trial Balance Report Line Items'"></caption>
+                <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Debit</th>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="lineitem : ${lineitems}">
+                    <td th:text="${lineitem.getDescription()}">Doe</td>
+                    <td th:text="${lineitem.getCreditString()}"></td>
+                    <td th:text="${lineitem.getDebitString()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+</body>
+</html>

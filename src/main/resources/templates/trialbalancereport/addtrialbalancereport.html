@@ -4,29 +4,28 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Add PNL</title>
+    <title>Add Trial Balance Report</title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Add A PNL</h1>
+    <h1 class="h2 border-bottom">Add A Trial Balance Report</h1>
     <div class="row">
-        <form class="col-4" action="/pnl/addpnl" enctype="multipart/form-data" method="post">
+        <form class="col-4" action="/trialbalancereport/addtrialbalancereport" enctype="multipart/form-data"
+              method="post">
             <div class="form-group">
                 <label for="companyId">Company</label>
                 <select class="form-control" id="companyId" name="companyId">
                     <option th:each="company : ${companies}" th:value="${company.getId()}"
-                            th:text="${company.getName()}"/>
+                            th:text="${company.getName()}"></option>
                 </select>
             </div>
-            <input type="hidden" name="month" th:value="0">
-            <input type="hidden" name="year" th:value="2010">
             <div class="form-group">
-                <label for="pnlfile">PNL File</label>
-                <input type="file" class="form-control-file" id="pnlfile" name="pnlfile">
+                <label for="tbrfile">Trial Balance Report File</label>
+                <input type="file" class="form-control-file" id="tbrfile" name="trialbalancereportfile">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a class="btn btn-danger" href="/company">Cancel</a>
+            <a class="btn btn-danger" href="/trialbalancereport">Cancel</a>
         </form>
     </div>
 </section>
