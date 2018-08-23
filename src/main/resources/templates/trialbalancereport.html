@@ -30,6 +30,10 @@
                         <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
                         <button type="submit" class="btn btn-primary">View Line Items</button>
                     </form>
+                    <form class="mx-1" action="/trialbalancereport/createjournalentries" method="GET">
+                        <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                        <button type="submit" class="btn btn-primary">Create Journal Entries</button>
+                    </form>
                     <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="mx-1 deleteTbrForm"
                           action="/trialbalancereport"
                           method="POST">

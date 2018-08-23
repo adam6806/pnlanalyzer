@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Add Trial Balance Report</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="h2 border-bottom">Create a Journal Entry Report</h1>
+    <div class="row">
+        <form class="col-4" action="/trialbalancereport/journalentries" enctype="multipart/form-data"
+              method="get">
+            <div class="form-group">
+                <label for="prevTbr">Previous Trial Balance Report</label>
+                <select class="form-control" id="prevTbr" name="prevTbr">
+                    <option th:each="trialbalancereport : ${trialbalancereports}"
+                            th:value="${trialbalancereport.getId()}"
+                            th:text="${trialbalancereport.getDate()}"></option>
+                </select>
+            </div>
+            <input type="hidden" name="currentTbr" th:value="${currentTbrId}"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-danger" href="/trialbalancereport">Cancel</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>
