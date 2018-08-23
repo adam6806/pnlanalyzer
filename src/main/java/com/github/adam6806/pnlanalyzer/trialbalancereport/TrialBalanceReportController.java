@@ -106,11 +106,7 @@ public class TrialBalanceReportController {
         ModelAndView modelAndView = new ModelAndView();
         TrialBalanceReport current = trialBalanceReportRepository.getOne(trialbalancereportId);
         List<TrialBalanceReport> all = trialBalanceReportRepository.findAllByCompany_Id(current.getCompany().getId());
-        for (TrialBalanceReport trialBalanceReport : all) {
-            if (trialBalanceReport.getDate().compareTo(current.getDate()) >= 0) {
-                all.remove(trialBalanceReport);
-            }
-        }
+        all.removeIf(trialBalanceReport -> trialBalanceReport.getDate().compareTo(current.getDate()) >= 0);
         modelAndView.addObject("trialbalancereports", all);
         modelAndView.addObject("currentTbrId", current.getId());
         modelAndView.setViewName("trialbalancereport/createjournalentries");
