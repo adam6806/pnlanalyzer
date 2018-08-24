@@ -14,15 +14,17 @@
     <table class="table table-striped table-bordered table-hover init-datatable">
         <caption>List of users</caption>
         <thead>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Email Address</th>
-        <th scope="col">Roles</th>
-        <th scope="col">Actions</th>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email Address</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Actions</th>
+        </tr>
         </thead>
         <tbody>
-        <tr scope="row" th:each="user : ${users}">
-            <td th:text="${user.getName()}">John</td>
+        <tr th:each="user : ${users}">
+            <td scope="row" th:text="${user.getName()}">John</td>
             <td th:text="${user.getLastName()}">Doe</td>
             <td th:text="${user.getEmail()}">jdoe@gmail.com</td>
             <td th:text="${user.getRoles()}">[ROLE_GUEST, ROLE_USER]</td>
