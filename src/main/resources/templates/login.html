@@ -1,24 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
 
 <head>
-    <title>PNL Analyzer</title>
+    <title>Log In</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 
 <body>
-<form th:action="@{/registration}" method="get">
-    <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
-</form>
-
-<div class="container">
-    <div class="row">
-        <div class="col-12 text-center">
-            <img th:src="@{/images/login.jpg}" width="300" height="300" alt="Logo"/>
-        </div>
-    </div>
+<section layout:fragment="content">
     <form th:action="@{/login}" method="POST" class="form-signin">
         <h3 class="form-signin-heading" th:text="Welcome"></h3>
         <br/>
@@ -28,12 +19,15 @@
         <input type="password" th:placeholder="Password"
                id="password" name="password" class="form-control"/> <br/>
 
+        <!--/*@thymesVar id="param" type="*/-->
+        <!--/*@thymesVar id="error" type="*/-->
         <div align="center" th:if="${param.error}">
             <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
         </div>
         <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
                 th:text="Login"></button>
+        <a class="btn btn-md btn-secondary btn-block" role="button" href="/registration">Register</a>
     </form>
-</div>
+</section>
 </body>
 </html>
