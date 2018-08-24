@@ -107,6 +107,13 @@ public class TrialBalanceReportController {
         TrialBalanceReport current = trialBalanceReportRepository.getOne(trialbalancereportId);
         List<TrialBalanceReport> all = trialBalanceReportRepository.findAllByCompany_Id(current.getCompany().getId());
         all.removeIf(trialBalanceReport -> trialBalanceReport.getDate().compareTo(current.getDate()) >= 0);
+        if (all.isEmpty()) {
+            modelAndView.addObject("errorMessage", "No Trial Balance Reports exist prior to the selected Trial Balance Report for this company.");
+            List<TrialBalanceReport> trialBalanceReports = trialBalanceReportRepository.findAll();
+            modelAndView.addObject("trialbalancereports", trialBalanceReports);
+            modelAndView.setViewName("trialbalancereport");
+            return modelAndView;
+        }
         modelAndView.addObject("trialbalancereports", all);
         modelAndView.addObject("currentTbrId", current.getId());
         modelAndView.setViewName("trialbalancereport/createjournalentries");
