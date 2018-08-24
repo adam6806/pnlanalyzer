@@ -19,7 +19,7 @@ public class ExcelParser {
 
     public static List<LineItem> parseExcelFile(InputStream excelFile) throws IOException, InvalidFormatException {
 
-        List<LineItem> lineItemList = new ArrayList();
+        List<LineItem> lineItemList = new ArrayList<>();
 
         Workbook workbook = WorkbookFactory.create(excelFile);
         Sheet sheet = workbook.getSheetAt(0);
@@ -76,9 +76,23 @@ public class ExcelParser {
                 csvPrinter.printRecord(firstColumn, "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), lineItem.getDescription(), "", decimalFormat.format(amount), "", "");
             }
         }
-        csvPrinter.printRecord("SPL", "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), "1020 · Income Clearing", "", decimalFormat.format(0 - total), "", "");
+        String incomeClearing = new String("1020 · Income Clearing".getBytes());
+        csvPrinter.printRecord("SPL", "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), incomeClearing, "", decimalFormat.format(0 - total), "", "");
         csvPrinter.printRecord("ENDTRNS", "", "", "", "", "", "", "", "");
 
-        return new ByteArrayInputStream(csvPrinter.getOut().toString().getBytes());
+        byte badByte = (byte) ("Â".getBytes()[0] - 1);
+        byte[] bytes = csvPrinter.getOut().toString().getBytes();
+        List<Byte> byteList = new ArrayList<>();
+        for (byte aByte : bytes) {
+            if (aByte != badByte) {
+                byteList.add(aByte);
+            }
+        }
+        byte[] goodBytes = new byte[byteList.size()];
+        for (int i = 0; i < byteList.size(); i++) {
+            goodBytes[i] = byteList.get(i);
+        }
+
+        return new ByteArrayInputStream(goodBytes);
     }
 }
