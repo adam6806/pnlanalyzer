@@ -13,8 +13,12 @@ import java.util.List;
 @Controller
 public class CompanyController {
 
+    private final CompanyRepository companyRepository;
+
     @Autowired
-    CompanyRepository companyRepository;
+    public CompanyController(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     @RequestMapping(value = "/company", method = RequestMethod.GET)
     public ModelAndView getCompanies() {

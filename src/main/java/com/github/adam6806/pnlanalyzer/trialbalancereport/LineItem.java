@@ -23,7 +23,7 @@ public class LineItem {
     @Column
     private Double debit;
 
-    public LineItem() {
+    LineItem() {
         description = "";
         credit = 0.0;
         debit = 0.0;

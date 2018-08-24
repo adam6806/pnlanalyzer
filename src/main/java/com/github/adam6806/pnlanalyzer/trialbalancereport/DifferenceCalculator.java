@@ -8,9 +8,9 @@ import java.util.Set;
 /**
  * Adam on 6/17/2017.
  */
-public class DifferenceCalculator {
+class DifferenceCalculator {
 
-    public static List<LineItem> calculateDifference(Set<LineItem> previousLineItems, Set<LineItem> currentLineItems) {
+    static List<LineItem> calculateDifference(Set<LineItem> previousLineItems, Set<LineItem> currentLineItems) {
 
         List<LineItem> newLineItems = new ArrayList<>();
         Iterator<LineItem> currentIterator = currentLineItems.iterator();
