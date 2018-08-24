@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class ExcelParser {
+class ExcelParser {
 
-    public static List<LineItem> parseExcelFile(InputStream excelFile) throws IOException, InvalidFormatException {
+    static List<LineItem> parseExcelFile(InputStream excelFile) throws IOException, InvalidFormatException {
 
         List<LineItem> lineItemList = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class ExcelParser {
         return lineItemList;
     }
 
-    public static InputStream generateJournalEntries(List<LineItem> lineItems, TrialBalanceReport current) throws IOException {
+    static InputStream generateJournalEntries(List<LineItem> lineItems, TrialBalanceReport current) throws IOException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
 
@@ -63,8 +63,7 @@ public class ExcelParser {
         lineItems.sort(Comparator.comparing(LineItem::getDescription));
 
         boolean isFirst = true;
-        for (int i = 0; i < lineItems.size(); i++) {
-            LineItem lineItem = lineItems.get(i);
+        for (LineItem lineItem : lineItems) {
             if (lineItem.getDescription().startsWith("4")) {
                 String firstColumn = "SPL";
                 if (isFirst) {
