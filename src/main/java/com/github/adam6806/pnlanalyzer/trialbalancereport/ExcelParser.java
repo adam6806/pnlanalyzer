@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -62,21 +63,27 @@ public class ExcelParser {
 
         lineItems.sort(Comparator.comparing(LineItem::getDescription));
 
+        List<String> wantedAccounts = Arrays.asList("5060", "5070", "1210", "1215");
+
         boolean isFirst = true;
-        for (int i = 0; i < lineItems.size(); i++) {
-            LineItem lineItem = lineItems.get(i);
-            if (lineItem.getDescription().startsWith("4")) {
+        for (LineItem lineItem : lineItems) {
+            if (lineItem.getDescription().startsWith("4") || wantedAccounts.parallelStream().anyMatch(lineItem.getDescription()::contains)) {
                 String firstColumn = "SPL";
                 if (isFirst) {
                     isFirst = false;
                     firstColumn = "TRNS";
                 }
+
                 Double amount = lineItem.getDebit() - lineItem.getCredit();
-                total += amount;
+
+                if (lineItem.getDescription().startsWith("4")) {
+                    total += amount;
+                }
+
                 csvPrinter.printRecord(firstColumn, "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), lineItem.getDescription(), "", decimalFormat.format(amount), "", "");
             }
         }
-        String incomeClearing = new String("1020 · Income Clearing".getBytes());
+        String incomeClearing = new String("1060 · Income Clearing".getBytes());
         csvPrinter.printRecord("SPL", "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), incomeClearing, "", decimalFormat.format(0 - total), "", "");
         csvPrinter.printRecord("ENDTRNS", "", "", "", "", "", "", "", "");
 
