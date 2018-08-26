@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -18,11 +17,13 @@ public class RoleController {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public RoleController(UserRepository userRepository, RoleRepository roleRepository) {
+    public RoleController(UserRepository userRepository, RoleRepository roleRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @RequestMapping(value = "/admin/edituserrole", method = RequestMethod.GET)
@@ -40,16 +41,7 @@ public class RoleController {
     @Transactional
     public ModelAndView saveUserRoles(@RequestParam Long userId, @RequestParam String roleSelect) {
         User user = userRepository.getOne(userId);
-        List<Role> allRoles = roleRepository.findAll();
-        switch (roleSelect) {
-            case "ROLE_USER":
-                allRoles.removeIf(role -> role.getRole().equals("ROLE_ADMIN"));
-                break;
-            case "ROLE_GUEST":
-                allRoles.removeIf(role -> role.getRole().equals("ROLE_USER"));
-                allRoles.removeIf(role -> role.getRole().equals("ROLE_ADMIN"));
-        }
-        user.setRoles(new HashSet<>(allRoles));
+        user.setRoles(roleService.getRolesForRole(roleSelect));
         userRepository.save(user);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:usermanagement");

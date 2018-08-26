@@ -44,14 +44,20 @@
                     </li>
                     <li sec:authorize="hasAuthority('ROLE_USER')" class="nav-item">
                         <a class="nav-link" href="/trialbalancereport">
-                            <i class="fa fa-file"></i>
+                            <i class="fa fa-file-invoice-dollar"></i>
                             Trial Balance Reports
                         </a>
                     </li>
                     <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
                         <a class="nav-link" href="/admin/usermanagement">
-                            <i class="fa fa-user"></i>
+                            <i class="fa fa-users"></i>
                             User Management
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" href="/admin/invite">
+                            <i class="fa fa-envelope"></i>
+                            User Invites
                         </a>
                     </li>
                 </ul>
