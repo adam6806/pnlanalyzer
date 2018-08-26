@@ -54,9 +54,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 }
             }
         }
-        Role guestRole = allRoles.stream().filter(role -> role.getRole().equals("ROLE_GUEST")).findFirst().get();
-        Set<Role> roles = new HashSet<>(Collections.singletonList(guestRole));
-        user.setRoles(roles);
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            Role guestRole = allRoles.stream().filter(role -> role.getRole().equals("ROLE_GUEST")).findFirst().get();
+            Set<Role> roles = new HashSet<>(Collections.singletonList(guestRole));
+            user.setRoles(roles);
+        }
+
         userRepository.save(user);
     }
 

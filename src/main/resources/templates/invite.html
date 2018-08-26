@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Invitation</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <form autocomplete="off" action="#" th:action="@{/invite}"
+          th:object="${user}" method="post" class="form-signin"
+          role="form">
+        <h3 class="form-signin-heading">Invitation Registration</h3>
+        <br/>
+        <div class="form-group">
+            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                   class="validation-message"></label>
+            <input type="text" th:field="*{name}" placeholder="Name"
+                   class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                   class="validation-message"></label>
+            <input type="text" th:field="*{lastName}"
+                   placeholder="Last Name" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <input type="text" th:field="*{email}" placeholder="Email"
+                   class="form-control"/> <label
+                th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                class="validation-message"></label>
+        </div>
+        <div class="form-group">
+            <input type="password" th:field="*{password}"
+                   placeholder="Password" class="form-control"/> <label
+                th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                class="validation-message"></label>
+        </div>
+        <input type="hidden" name="inviteId" th:value="${inviteId}">
+
+        <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
+        <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
+    </form>
+</section>
+</body>
+</html>
