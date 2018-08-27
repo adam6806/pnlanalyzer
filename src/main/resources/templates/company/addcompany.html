@@ -12,11 +12,8 @@
 <section layout:fragment="content">
     <h1 class="h2 border-bottom">Add A Company</h1>
     <div class="row">
-        <form class="col-4" action="/company/addcompany" method="post">
-            <div class="form-group">
-                <label for="companyName">Company Name</label>
-                <input type="text" class="form-control" id="companyName" name="companyName"/>
-            </div>
+        <form class="col-4" action="/company/addcompany" method="post" th:object="${company}">
+            <div th:replace="fragments :: formField (field='name', label = 'Company Name', type = 'text')"></div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <a class="btn btn-danger" href="/company">Cancel</a>
         </form>

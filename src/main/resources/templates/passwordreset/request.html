@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Password Reset</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <form class="col-4" autocomplete="off" action="#" th:action="@{/passwordreset/request}" th:object="${passwordReset}"
+          method="post" role="form">
+        <h3>Password Reset</h3>
+        <br/>
+        <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
+
+        <button type="submit" class="btn btn-primary btn-block">Request Password Reset</button>
+        <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
+    </form>
+</section>
+</body>
+</html>
