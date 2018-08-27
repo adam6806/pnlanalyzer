@@ -19,10 +19,9 @@
         <input type="password" th:placeholder="Password"
                id="password" name="password" class="form-control"/> <br/>
 
-        <!--/*@thymesVar id="param" type="*/-->
-        <!--/*@thymesVar id="error" type="*/-->
         <div align="center" th:if="${param.error}">
-            <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
+            <p class="alert-danger">Email or Password invalid, please verify. <br><a href="/passwordreset/request">Forgot
+                Password?</a></p>
         </div>
         <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
                 th:text="Login"></button>
