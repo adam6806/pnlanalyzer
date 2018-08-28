@@ -4,14 +4,14 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>User Admin</title>
+    <title>User Management</title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Edit User Role</h1>
-    <div class="row">
-        <form class="col-4" action="/admin/edituserrole" method="post">
+    <h1 class="h2 border-bottom mb-4 text-center">Edit User Role</h1>
+    <div class="row justify-content-center">
+        <form class="col-lg-8 col-md-9 col-sm-10" action="/admin/edituserrole" method="post">
             <div class="form-group">
                 <label for="roleSelect">Choose User Role</label>
                 <select class="form-control" id="roleSelect" name="roleSelect">

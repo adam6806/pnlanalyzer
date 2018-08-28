@@ -1,32 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
-      layout:decorate="~{home.html}">
+      lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Log In</title>
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="/webjars/font-awesome/5.2.0/js/all.js"></script>
+    <title>PNL Analyzer</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
 </head>
 
 <body>
-<section layout:fragment="content">
-    <form th:action="@{/login}" method="POST" class="form-signin">
-        <h3 class="form-signin-heading" th:text="Welcome"></h3>
-        <br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form th:action="@{/login}" method="POST" class="form-signin">
+                <h3 class="form-signin-heading" th:text="Welcome"></h3>
+                <br/>
 
-        <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}"
-               class="form-control"/> <br/>
-        <input type="password" th:placeholder="Password"
-               id="password" name="password" class="form-control"/> <br/>
+                <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}"
+                       class="form-control"/> <br/>
+                <input type="password" th:placeholder="Password"
+                       id="password" name="password" class="form-control"/> <br/>
 
-        <div align="center" th:if="${param.error}">
-            <p class="alert-danger">Email or Password invalid, please verify. <br><a href="/passwordreset/request">Forgot
-                Password?</a></p>
+                <div align="center" th:if="${param.error}">
+                    <p class="alert-danger">Email or Password invalid, please verify. <br><a
+                            href="/passwordreset/request">Forgot
+                        Password?</a></p>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
+                        th:text="Login"></button>
+                <a class="btn btn-md btn-secondary btn-block" role="button" href="/registration">Register</a>
+            </form>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
-                th:text="Login"></button>
-        <a class="btn btn-md btn-secondary btn-block" role="button" href="/registration">Register</a>
-    </form>
-</section>
+    </div>
+</div>
 </body>
 </html>

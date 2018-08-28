@@ -4,46 +4,34 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Invitation</title>
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="/webjars/font-awesome/5.2.0/js/all.js"></script>
+    <title>Invite</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
 </head>
 
 <body>
-<section layout:fragment="content">
-    <form autocomplete="off" action="#" th:action="@{/invite}"
-          th:object="${user}" method="post" class="form-signin"
-          role="form">
-        <h3 class="form-signin-heading">Invitation Registration</h3>
-        <br/>
-        <div class="form-group">
-            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                   class="validation-message"></label>
-            <input type="text" th:field="*{name}" placeholder="Name"
-                   class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
-                   class="validation-message"></label>
-            <input type="text" th:field="*{lastName}"
-                   placeholder="Last Name" class="form-control"/>
-        </div>
-        <div class="form-group">
-            <input type="text" th:field="*{email}" placeholder="Email"
-                   class="form-control"/> <label
-                th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                class="validation-message"></label>
-        </div>
-        <div class="form-group">
-            <input type="password" th:field="*{password}"
-                   placeholder="Password" class="form-control"/> <label
-                th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-                class="validation-message"></label>
-        </div>
-        <input type="hidden" name="inviteId" th:value="${inviteId}">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form th:action="@{/invite}" th:object="${user}" method="POST" class="form-signin">
+                <h3 class="form-signin-heading" th:text="Complete Registration"></h3>
+                <br/>
 
-        <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
-        <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
-    </form>
-</section>
+                <div th:replace="fragments :: formField (field='name', label = 'First Name', type = 'text')"></div>
+                <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
+                <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
+                <div th:replace="fragments :: formField (field='password', label = 'Password', type = 'password')"></div>
+                <input type="hidden" name="inviteId" th:value="${inviteId}">
+
+                <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
+                <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

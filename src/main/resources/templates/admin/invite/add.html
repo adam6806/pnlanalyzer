@@ -4,30 +4,30 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Create User Invite</title>
+    <title>User Management</title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Create User Invite</h1>
-    <form class="col-4" autocomplete="off" action="#" th:action="@{/admin/invite/add}"
-          th:object="${invite}" method="post"
-          role="form">
+    <h1 class="h2 border-bottom mb-4 text-center">Create Invite</h1>
+    <div class="row justify-content-center">
+        <form class="col-lg-8 col-md-9 col-sm-10" th:action="@{/admin/invite/add}" th:object="${invite}" method="post">
 
-        <div th:replace="fragments :: formField (field='firstName', label = 'First Name', type = 'text')"></div>
-        <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
-        <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
+            <div th:replace="fragments :: formField (field='firstName', label = 'First Name', type = 'text')"></div>
+            <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
+            <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
 
-        <div class="form-group">
-            <label for="roleSelect">Choose User Role</label>
-            <select class="form-control" id="roleSelect" name="roleSelect">
-                <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"></option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="roleSelect">Choose User Role</label>
+                <select class="form-control" id="roleSelect" name="roleSelect">
+                    <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"></option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Create and Send Invite</button>
-        <a class="btn btn-md btn-secondary btn-block" role="button" href="/admin/invite">Back to Invites</a>
-    </form>
+            <button type="submit" class="btn btn-primary btn-block">Create and Send Invite</button>
+            <a class="btn btn-md btn-secondary btn-block" role="button" href="/admin/invite">Back to Invites</a>
+        </form>
+    </div>
 </section>
 </body>
 </html>

@@ -4,14 +4,15 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Add Trial Balance Report</title>
+    <title>Trial Balance Report</title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Create a Journal Entry Report</h1>
-    <div class="row">
-        <form class="col-4" action="/trialbalancereport/journalentries" enctype="multipart/form-data"
+    <h1 class="h2 border-bottom mb-4 text-center">Create a Journal Entry Report</h1>
+    <div class="row justify-content-center">
+        <form class="col-lg-8 col-md-9 col-sm-10" action="/trialbalancereport/journalentries"
+              enctype="multipart/form-data"
               method="get">
             <div class="form-group">
                 <label for="prevTbr">Previous Trial Balance Report</label>
