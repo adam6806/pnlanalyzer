@@ -4,6 +4,7 @@
       layout:decorate="~{home.html}">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="/webjars/font-awesome/5.2.0/js/all.js"></script>
@@ -14,9 +15,7 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
+<div class="text-center">
             <form th:action="@{/invite}" th:object="${user}" method="POST" class="form-signin">
                 <h3 class="form-signin-heading" th:text="Complete Registration"></h3>
                 <br/>
@@ -30,8 +29,6 @@
                 <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
                 <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
             </form>
-        </div>
-    </div>
 </div>
 </body>
 </html>

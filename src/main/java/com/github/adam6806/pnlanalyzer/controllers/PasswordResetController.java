@@ -79,7 +79,7 @@ public class PasswordResetController {
         } else {
             PasswordResetForm passwordResetForm = new PasswordResetForm();
             passwordResetForm.setResetId(resetId);
-            modelAndView.addObject("changePassword", passwordResetForm);
+            modelAndView.addObject("passwordResetForm", passwordResetForm);
             modelAndView.setViewName("passwordreset");
         }
         return modelAndView;
