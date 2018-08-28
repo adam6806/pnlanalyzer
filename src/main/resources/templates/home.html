@@ -94,7 +94,9 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('.init-datatable').DataTable();
+        $('.init-datatable').DataTable({
+            responsive: true
+        });
         $(document).ready(function () {
             setTimeout(function () {
                 $(".top-message").fadeOut("slow");
