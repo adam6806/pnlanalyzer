@@ -4,15 +4,15 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Admin Page</title>
+    <title>Company Management</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Edit A Company</h1>
-    <div class="row">
-        <form class="col-4" action="/company/editcompany" method="post" th:object="${company}">
+    <h1 class="h2 border-bottom mb-4 text-center">Edit Company</h1>
+    <div class="row justify-content-center">
+        <form class="col-lg-8 col-md-9 col-sm-10" action="/company/editcompany" method="post" th:object="${company}">
             <div th:replace="fragments :: formField (field='name', label = 'Company Name', type = 'text')"></div>
             <div th:replace="fragments :: hiddenField (field='id')"></div>
             <button type="submit" class="btn btn-primary">Submit</button>
