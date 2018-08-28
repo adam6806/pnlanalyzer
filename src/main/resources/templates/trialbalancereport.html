@@ -28,21 +28,27 @@
             <td th:text="${trialBalanceReport.getDate()}">Doe</td>
             <td th:text="${trialBalanceReport.getCompany().getName()}"></td>
             <td>
-                <div class="row ml-2">
-                    <form class="mx-1" action="/trialbalancereport/lineitem" method="GET">
-                        <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                        <button type="submit" class="btn btn-primary">View Line Items</button>
-                    </form>
-                    <form class="mx-1" action="/trialbalancereport/createjournalentries" method="GET">
-                        <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                        <button type="submit" class="btn btn-primary">Create Journal Entries</button>
-                    </form>
-                    <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="mx-1 deleteTbrForm"
-                          action="/trialbalancereport"
-                          method="POST">
-                        <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <div class="btn-group mx-auto">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <form action="/trialbalancereport/lineitem" method="GET">
+                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                            <button type="submit" class="btn btn-primary dropdown-item">View Line Items</button>
+                        </form>
+                        <form action="/trialbalancereport/createjournalentries" method="GET">
+                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                            <button type="submit" class="btn btn-primary dropdown-item">Create Journal Entries</button>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteTbrForm alert-danger"
+                              action="/trialbalancereport" method="POST">
+                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                            <button type="submit" class="btn btn-danger dropdown-item">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </td>
         </tr>

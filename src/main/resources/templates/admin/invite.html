@@ -27,11 +27,17 @@
             <td th:text="${invite.getEmail()}">jdoe@gmail.com</td>
             <td th:text="${invite.getRoles()}">[ROLE_GUEST, ROLE_USER]</td>
             <td>
-                <div class="row ml-2">
-                    <form class="mx-1 deleteUserForm" action="/admin/invite/delete" method="post">
-                        <input type="hidden" name="inviteId" th:value="${invite.getId()}"/>
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <div class="btn-group mx-auto">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <form class="deleteUserForm alert-danger" action="/admin/invite/delete" method="post">
+                            <input type="hidden" name="inviteId" th:value="${invite.getId()}"/>
+                            <button type="submit" class="btn btn-danger dropdown-item">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </td>
         </tr>

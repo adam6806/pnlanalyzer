@@ -23,16 +23,24 @@
         <tr th:each="company : ${companies}">
             <td scope="row" th:text="${company.getName()}">Doe</td>
             <td>
-                <div class="row ml-2">
-                    <form class="mx-1" action="/company/editcompany" method="GET">
-                        <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                        <button type="submit" class="btn btn-primary">Edit</button>
-                    </form>
-                    <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="mx-1 deleteCompanyForm" action="/company"
-                          method="POST">
-                        <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <div class="btn-group mx-auto">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <form action="/company/editcompany" method="GET">
+                            <input type="hidden" name="companyId" th:value="${company.getId()}"/>
+                            <button type="submit" class="btn btn-primary dropdown-item">Edit</button>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteCompanyForm alert-danger"
+                              action="/company"
+                              method="POST">
+                            <input type="hidden" name="companyId" th:value="${company.getId()}"/>
+                            <button type="submit" class="btn btn-danger dropdown-item">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </td>
         </tr>
