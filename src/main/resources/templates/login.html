@@ -12,30 +12,26 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
 </head>
 
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <form th:action="@{/login}" method="POST" class="form-signin">
-                <h3 class="form-signin-heading" th:text="Welcome"></h3>
-                <br/>
+<body class="text-center">
 
-                <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}"
-                       class="form-control"/> <br/>
-                <input type="password" th:placeholder="Password"
-                       id="password" name="password" class="form-control"/> <br/>
+<form th:action="@{/login}" method="POST" class="form-signin">
+    <h1 class="h3 mb-3 font-weight-normal">Welcome</h1>
+    <br/>
 
-                <div align="center" th:if="${param.error}">
-                    <p class="alert-danger">Email or Password invalid, please verify. <br><a
-                            href="/passwordreset/request">Forgot
-                        Password?</a></p>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
-                        th:text="Login"></button>
-                <a class="btn btn-md btn-secondary btn-block" role="button" href="/registration">Register</a>
-            </form>
-        </div>
+    <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}"
+           class="form-control"/> <br/>
+    <input type="password" th:placeholder="Password"
+           id="password" name="password" class="form-control"/> <br/>
+
+    <div align="center" th:if="${param.error}">
+        <p class="alert-danger">Email or Password invalid, please verify. <br><a
+                href="/passwordreset/request">Forgot
+            Password?</a></p>
     </div>
-</div>
+    <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
+            th:text="Login"></button>
+    <a class="btn btn-md btn-secondary btn-block" role="button" href="/registration">Register</a>
+</form>
+
 </body>
 </html>
