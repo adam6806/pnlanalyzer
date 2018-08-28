@@ -2,7 +2,7 @@ package com.github.adam6806.pnlanalyzer.controllers;
 
 import com.github.adam6806.pnlanalyzer.entities.PasswordReset;
 import com.github.adam6806.pnlanalyzer.entities.User;
-import com.github.adam6806.pnlanalyzer.forms.ChangePassword;
+import com.github.adam6806.pnlanalyzer.forms.PasswordResetForm;
 import com.github.adam6806.pnlanalyzer.repositories.PasswordResetRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
 import com.github.adam6806.pnlanalyzer.services.SendGridEmailService;
@@ -77,18 +77,18 @@ public class PasswordResetController {
             modelAndView.addObject("errorMessage", "The password reset link has expired. Please create a new password reset request.");
             modelAndView.setViewName("login");
         } else {
-            ChangePassword changePassword = new ChangePassword();
-            changePassword.setResetId(resetId);
-            modelAndView.addObject("changePassword", changePassword);
+            PasswordResetForm passwordResetForm = new PasswordResetForm();
+            passwordResetForm.setResetId(resetId);
+            modelAndView.addObject("changePassword", passwordResetForm);
             modelAndView.setViewName("passwordreset");
         }
         return modelAndView;
     }
 
     @RequestMapping(value = "/passwordreset", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid ChangePassword changePassword, BindingResult bindingResult) {
+    public ModelAndView createNewUser(@Valid PasswordResetForm passwordResetForm, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        PasswordReset passwordReset = passwordResetRepository.getOne(UUID.fromString(changePassword.getResetId()));
+        PasswordReset passwordReset = passwordResetRepository.getOne(UUID.fromString(passwordResetForm.getResetId()));
         User user = userRepository.findByEmail(passwordReset.getEmail());
         if (user == null) {
             bindingResult
@@ -104,7 +104,7 @@ public class PasswordResetController {
             modelAndView.setViewName("passwordreset");
         } else {
             passwordResetRepository.delete(passwordReset);
-            user.setPassword(passwordEncoder.encode(changePassword.getPassword()));
+            user.setPassword(passwordEncoder.encode(passwordResetForm.getPassword()));
             userRepository.save(user);
             modelAndView.addObject("successMessage", "Your password was successfully reset!");
             modelAndView.setViewName("login");

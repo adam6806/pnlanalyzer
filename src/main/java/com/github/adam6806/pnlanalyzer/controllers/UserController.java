@@ -1,16 +1,21 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
 import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.forms.PasswordUpdateForm;
+import com.github.adam6806.pnlanalyzer.forms.ProfileUpdateForm;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -44,43 +49,61 @@ public class UserController {
     public ModelAndView getUserProfile() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(auth.getName());
+        ProfileUpdateForm profileUpdateForm = new ProfileUpdateForm();
+        profileUpdateForm.setEmail(user.getEmail());
+        profileUpdateForm.setFirstName(user.getName());
+        profileUpdateForm.setLastName(user.getLastName());
+        profileUpdateForm.setUserId(user.getId());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", user);
+        modelAndView.addObject("profileUpdateForm", profileUpdateForm);
         modelAndView.setViewName("profile");
         return modelAndView;
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@RequestParam Long userId, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String email) {
+    public ModelAndView updateProfile(@Valid ProfileUpdateForm profileUpdateForm, BindingResult bindingResult) {
 
         ModelAndView modelAndView = new ModelAndView();
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("profile");
+        } else {
+            User user = userRepository.getOne(profileUpdateForm.getUserId());
+            user.setName(profileUpdateForm.getFirstName());
+            user.setLastName(profileUpdateForm.getLastName());
+            user.setEmail(profileUpdateForm.getEmail());
+            modelAndView.addObject("successMessage", "Your profile was successfully updated.");
+        }
+        modelAndView.addObject("profileUpdateForm", profileUpdateForm);
         modelAndView.setViewName("profile");
-        User user = userRepository.getOne(userId);
-        user.setName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        User save = userRepository.save(user);
-        modelAndView.addObject("user", save);
-        modelAndView.addObject("successMessage", "Your profile was successfully updated.");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/profile/updatepassword", method = RequestMethod.GET)
+    public ModelAndView getPasswordUpdateForm() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+        PasswordUpdateForm passwordUpdateForm = new PasswordUpdateForm();
+        passwordUpdateForm.setUserId(user.getId());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("passwordUpdateForm", passwordUpdateForm);
+        modelAndView.setViewName("profile/updatepassword");
         return modelAndView;
     }
 
     @RequestMapping(value = "/profile/updatepassword", method = RequestMethod.POST)
-    public ModelAndView updatePassword(@RequestParam Long userId, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    public ModelAndView updatePassword(@Valid PasswordUpdateForm passwordUpdateForm, BindingResult bindingResult) {
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("profile");
-        User user = userRepository.getOne(userId);
 
-        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-            User save = userRepository.save(user);
-            modelAndView.addObject("user", save);
-            modelAndView.addObject("successMessage", "Your password was successfully updated.");
+        if (bindingResult.hasErrors()) {
+            modelAndView.addObject("passwordUpdateForm", passwordUpdateForm);
+            modelAndView.setViewName("profile/updatepassword");
         } else {
-            modelAndView.addObject("errorMessage", "Your old password was incorrect.");
+            User user = userRepository.getOne(passwordUpdateForm.getUserId());
+            user.setPassword(passwordEncoder.encode(passwordUpdateForm.getPassword2()));
+            modelAndView.addObject("successMessage", "Your profile was successfully updated.");
+            modelAndView.setViewName("redirect:");
         }
-
         return modelAndView;
     }
 

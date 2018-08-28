@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class ChangePassword {
+public class PasswordResetForm {
 
     @NotEmpty(message = "*Please provide your password")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "*Your password must be at least 8 characters long and contain a lower case letter, uppercase letter, and a number.")
