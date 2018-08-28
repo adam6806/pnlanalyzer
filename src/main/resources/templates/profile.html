@@ -13,37 +13,15 @@
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-9 col-sm-10">
             <div class="mb-5">
-                <form action="/profile" method="post">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input th:value="${user.getName()}" type="text" class="form-control" id="firstName"
-                               name="firstName">
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input th:value="${user.getLastName()}" type="text" class="form-control" id="lastName"
-                               name="lastName">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input th:value="${user.getEmail()}" type="email" class="form-control" id="email" name="email">
-                    </div>
-                    <input type="hidden" name="userId" th:value="${user.getId()}"/>
+                <form action="/profile" method="post" th:object="${profileUpdateForm}">
+                    <div th:replace="fragments :: formField (field='firstName', label = 'First Name', type = 'text')"></div>
+                    <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
+                    <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
+                    <div th:replace="fragments :: hiddenField (field='userId')"></div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
-            <form action="/profile/updatepassword" method="post">
-                <div class="form-group">
-                    <label for="oldPassword">Old Password</label>
-                    <input type="password" class="form-control" id="oldPassword" name="oldPassword">
-                </div>
-                <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <input type="password" class="form-control" id="newPassword" name="newPassword">
-                </div>
-                <input type="hidden" name="userId" th:value="${user.getId()}"/>
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+            <a type="button" href="/profile/updatepassword">Update Password</a>
         </div>
     </div>
 </section>
