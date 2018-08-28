@@ -16,19 +16,19 @@
 
 <body>
 <div class="text-center">
-            <form th:action="@{/invite}" th:object="${user}" method="POST" class="form-signin">
-                <h3 class="form-signin-heading" th:text="Complete Registration"></h3>
-                <br/>
+    <form th:action="@{/invite}" th:object="${user}" method="POST" class="form-signin">
+        <h3 class="form-signin-heading" th:text="Complete Registration"></h3>
+        <br/>
 
-                <div th:replace="fragments :: formField (field='name', label = 'First Name', type = 'text')"></div>
-                <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
-                <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
-                <div th:replace="fragments :: formField (field='password', label = 'Password', type = 'password')"></div>
-                <input type="hidden" name="inviteId" th:value="${inviteId}">
+        <div th:replace="fragments :: formField (field='name', label = 'First Name', type = 'text')"></div>
+        <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
+        <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
+        <div th:replace="fragments :: formField (field='password', label = 'Password', type = 'password')"></div>
+        <input type="hidden" name="inviteId" th:value="${inviteId}">
 
-                <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
-                <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
-            </form>
+        <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
+        <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
+    </form>
 </div>
 </body>
 </html>
