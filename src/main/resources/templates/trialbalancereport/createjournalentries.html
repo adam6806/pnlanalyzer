@@ -16,7 +16,7 @@
               method="get">
             <div class="form-group">
                 <label for="prevTbr">Previous Trial Balance Report</label>
-                <select class="form-control" id="prevTbr" name="prevTbr">
+                <select class="selectpicker form-control" id="prevTbr" name="prevTbr" data-live-search="true">
                     <option th:each="trialbalancereport : ${trialbalancereports}"
                             th:value="${trialbalancereport.getId()}"
                             th:text="${trialbalancereport.getDate()}"></option>

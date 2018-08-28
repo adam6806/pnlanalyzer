@@ -14,7 +14,7 @@
         <form class="col-lg-8 col-md-9 col-sm-10" action="/admin/edituserrole" method="post">
             <div class="form-group">
                 <label for="roleSelect">Choose User Role</label>
-                <select class="form-control" id="roleSelect" name="roleSelect">
+                <select class="selectpicker form-control" id="roleSelect" name="roleSelect" data-live-search="true">
                     <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"
                             th:selected="${user.getRoles().contains(role)}"></option>
                 </select>
