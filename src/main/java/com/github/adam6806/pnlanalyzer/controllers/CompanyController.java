@@ -56,7 +56,7 @@ public class CompanyController {
         ModelAndView modelAndView = new ModelAndView();
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("company", company);
-            modelAndView.setViewName("/company/addcompany");
+            modelAndView.setViewName("company/addcompany");
         } else {
             companyRepository.save(company);
             modelAndView.setViewName("redirect:/company");
@@ -78,7 +78,7 @@ public class CompanyController {
         ModelAndView modelAndView = new ModelAndView();
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("company", company);
-            modelAndView.setViewName("/company/editcompany");
+            modelAndView.setViewName("company/editcompany");
         } else {
             companyRepository.save(company);
             modelAndView.setViewName("redirect:/company");

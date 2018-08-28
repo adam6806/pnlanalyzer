@@ -78,7 +78,7 @@ public class UserInviteController {
         }
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("roles", roleRepository.findAll());
-            modelAndView.setViewName("/admin/invite/add");
+            modelAndView.setViewName("admin/invite/add");
         } else {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User admin = userRepository.findByEmail(auth.getName());
@@ -89,7 +89,7 @@ public class UserInviteController {
             sendGridEmailService.sendUserInvite(savedInvite);
             List<Invite> all = userInviteRepository.findAll();
             modelAndView.addObject("invites", all);
-            modelAndView.setViewName("/admin/invite");
+            modelAndView.setViewName("admin/invite");
         }
         return modelAndView;
     }

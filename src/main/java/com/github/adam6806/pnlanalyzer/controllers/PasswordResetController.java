@@ -59,12 +59,12 @@ public class PasswordResetController {
                             "*This email does not match any users in the system. Please try again. If you believe this message is in error contact asmith0935@gmail.com or any administrator.");
         }
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("/passwordreset/request");
+            modelAndView.setViewName("passwordreset/request");
         } else {
             passwordResetRepository.save(passwordReset);
             sendGridEmailService.sendPasswordReset(passwordReset, user);
             modelAndView.addObject("successMessage", "A password reset email has been sent to you. Please follow the instructions in the email to reset your password.");
-            modelAndView.setViewName("/login");
+            modelAndView.setViewName("login");
         }
         return modelAndView;
     }
@@ -75,7 +75,7 @@ public class PasswordResetController {
         PasswordReset passwordReset = passwordResetRepository.getOne(UUID.fromString(resetId));
         if (passwordReset == null) {
             modelAndView.addObject("errorMessage", "The password reset link has expired. Please create a new password reset request.");
-            modelAndView.setViewName("/login");
+            modelAndView.setViewName("login");
         } else {
             ChangePassword changePassword = new ChangePassword();
             changePassword.setResetId(resetId);
