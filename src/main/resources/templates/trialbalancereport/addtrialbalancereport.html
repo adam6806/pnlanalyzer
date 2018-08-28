@@ -16,7 +16,7 @@
               method="post">
             <div class="form-group">
                 <label for="companyId">Company</label>
-                <select class="form-control" id="companyId" name="companyId">
+                <select class="selectpicker form-control" id="companyId" name="companyId" data-live-search="true">
                     <option th:each="company : ${companies}" th:value="${company.getId()}"
                             th:text="${company.getName()}"></option>
                 </select>

@@ -19,7 +19,7 @@
 
             <div class="form-group">
                 <label for="roleSelect">Choose User Role</label>
-                <select class="form-control" id="roleSelect" name="roleSelect">
+                <select class="selectpicker form-control" id="roleSelect" name="roleSelect" data-live-search="true">
                     <option th:each="role : ${roles}" th:value="${role.getRole()}" th:text="${role.getRole()}"></option>
                 </select>
             </div>
