@@ -13,11 +13,11 @@
         <caption>List of user invites</caption>
         <thead>
         <tr>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Email Address</th>
-            <th scope="col">Roles</th>
-            <th scope="col">Actions</th>
+            <th data-priority="2" scope="col">First Name</th>
+            <th data-priority="3" scope="col">Last Name</th>
+            <th data-priority="1" scope="col">Email Address</th>
+            <th data-priority="4" scope="col">Roles</th>
+            <th data-priority="1" scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -50,7 +50,27 @@
     </form>
     <script>
         $('.deleteUserForm').submit(function () {
-            return confirm("Are you sure you want to delete this user invite?");
+            var confirmation = false;
+            bootbox.confirm({
+                title: "Delete Confirmation",
+                message: "Are you sure you want to delete this invite?",
+                buttons: {
+                    cancel: {
+                        label: 'Cancel',
+                        className: 'btn-secondary'
+                    },
+                    confirm: {
+                        label: 'Delete',
+                        className: 'btn-danger'
+                    }
+                },
+                centerVertical: true,
+                callback: function (result) {
+                    confirmation = result;
+                }
+            });
+            return confirmation;
+
         });
     </script>
 </section>
