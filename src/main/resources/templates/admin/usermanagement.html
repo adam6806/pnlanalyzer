@@ -36,12 +36,15 @@
                     <div class="dropdown-menu">
                         <form action="/admin/edituserrole" method="get">
                             <input type="hidden" name="userId" th:value="${user.getId()}"/>
-                            <button type="submit" class="btn btn-primary dropdown-item">Change Roles</button>
+                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fa fa-id-badge"></i>&nbsp;&nbsp;Change
+                                Roles
+                            </button>
                         </form>
                         <div class="dropdown-divider"></div>
                         <form class=" deleteUserForm alert-danger" action="/admin/usermanagement" method="post">
                             <input type="hidden" name="userId" th:value="${user.getId()}"/>
-                            <button type="submit" class="btn btn-danger dropdown-item">Delete</button>
+                            <button type="submit" class="btn btn-danger dropdown-item"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                            </button>
                         </form>
                     </div>
                 </div>

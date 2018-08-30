@@ -31,14 +31,16 @@
                     <div class="dropdown-menu">
                         <form action="/company/editcompany" method="GET">
                             <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                            <button type="submit" class="btn btn-primary dropdown-item">Edit</button>
+                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fas fa-pen"></i>&nbsp;&nbsp;Edit
+                            </button>
                         </form>
                         <div class="dropdown-divider"></div>
                         <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteCompanyForm alert-danger"
                               action="/company"
                               method="POST">
                             <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                            <button type="submit" class="btn btn-danger dropdown-item">Delete</button>
+                            <button type="submit" class="btn btn-danger dropdown-item"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -47,7 +49,7 @@
         </tbody>
     </table>
     <form action="/company/addcompany" method="get">
-        <button type="submit" class="btn btn-primary">Add a Company</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add a Company</button>
     </form>
     <script>
         $('.deleteCompanyForm').submit(function () {

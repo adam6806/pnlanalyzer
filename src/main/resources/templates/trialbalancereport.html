@@ -36,17 +36,22 @@
                     <div class="dropdown-menu">
                         <form action="/trialbalancereport/lineitem" method="GET">
                             <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                            <button type="submit" class="btn btn-primary dropdown-item">View Line Items</button>
+                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fa fa-eye"></i>&nbsp;&nbsp;View
+                                Line Items
+                            </button>
                         </form>
                         <form action="/trialbalancereport/createjournalentries" method="GET">
                             <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                            <button type="submit" class="btn btn-primary dropdown-item">Create Journal Entries</button>
+                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create
+                                Journal Entries
+                            </button>
                         </form>
                         <div class="dropdown-divider"></div>
                         <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteTbrForm alert-danger"
                               action="/trialbalancereport" method="POST">
                             <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                            <button type="submit" class="btn btn-danger dropdown-item">Delete</button>
+                            <button type="submit" class="btn btn-danger dropdown-item"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -55,7 +60,8 @@
         </tbody>
     </table>
     <form action="/trialbalancereport/addtrialbalancereport" method="get">
-        <button type="submit" class="btn btn-primary">Add a Trial Balance Report</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add a Trial Balance Report
+        </button>
     </form>
     <script>
         $('.deleteTbrForm').submit(function () {
