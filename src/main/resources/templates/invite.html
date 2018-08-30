@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
-      layout:decorate="~{home.html}">
+      xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +16,7 @@
 <body>
 <div class="text-center">
     <form th:action="@{/invite}" th:object="${user}" method="POST" class="form-signin">
-        <h3 class="form-signin-heading" th:text="Complete Registration"></h3>
+        <h3 class="form-signin-heading">Complete Registration</h3>
         <br/>
 
         <div th:replace="fragments :: formField (field='name', label = 'First Name', type = 'text')"></div>
