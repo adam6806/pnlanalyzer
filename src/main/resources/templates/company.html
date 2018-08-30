@@ -11,6 +11,13 @@
 <body>
 <section layout:fragment="content">
     <h1 class="h2 border-bottom mb-4 text-center">Companies</h1>
+    <div class="row mb-2">
+        <div class="col">
+            <form action="/company/addcompany" method="get">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add a Company</button>
+            </form>
+        </div>
+    </div>
     <table class="table table-striped table-bordered table-hover init-datatable display nowrap" style="width:100%">
         <caption>List of users</caption>
         <thead>
@@ -48,9 +55,7 @@
         </tr>
         </tbody>
     </table>
-    <form action="/company/addcompany" method="get">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add a Company</button>
-    </form>
+
     <script>
         $('.deleteCompanyForm').submit(function () {
             var confirmation = false;
