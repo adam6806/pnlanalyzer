@@ -53,7 +53,27 @@
     </form>
     <script>
         $('.deleteCompanyForm').submit(function () {
-            return confirm("Are you sure you want to delete this Company? This action is irreversible");
+            var confirmation = false;
+            bootbox.confirm({
+                title: "Delete Confirmation",
+                message: "Are you sure you want to delete this company? Deleting this company will also delete all Trial Balance Reports associated with this company. This action is irreversible.",
+                buttons: {
+                    cancel: {
+                        label: 'Cancel',
+                        className: 'btn-secondary'
+                    },
+                    confirm: {
+                        label: 'Delete',
+                        className: 'btn-danger'
+                    }
+                },
+                centerVertical: true,
+                callback: function (result) {
+                    confirmation = result;
+                }
+            });
+            return confirmation;
+
         });
     </script>
 </section>
