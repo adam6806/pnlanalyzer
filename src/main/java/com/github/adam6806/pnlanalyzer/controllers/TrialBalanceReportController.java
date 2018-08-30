@@ -147,7 +147,7 @@ public class TrialBalanceReportController {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(current.getDate());
         int month = calendar.get(Calendar.MONTH) + 1;
-        String fileName = month + "-" + calendar.get(Calendar.YEAR) + "-" + current.getCompany().getName() + ".iif";
+        String fileName = month + "-" + calendar.get(Calendar.YEAR) + "-" + current.getCompany().getName() + "-TBRResult.iif";
 
         Resource resource = new InputStreamResource(ExcelParser.generateJournalEntries(calculatedDifference, current));
 
