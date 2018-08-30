@@ -25,20 +25,35 @@ public class ExcelParser {
         List<LineItem> lineItemList = new ArrayList<>();
 
         Workbook workbook = WorkbookFactory.create(excelFile);
-        Sheet sheet = workbook.getSheetAt(0);
-        for (Row row : sheet) {
+        Sheet sheet1 = workbook.getSheetAt(0);
+        for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+            Sheet sheet = workbook.getSheetAt(i);
+            if ("Sheet1".equals(sheet.getSheetName())) {
+                sheet1 = sheet;
+                break;
+            }
+        }
+
+        int debitColumn = -1;
+        int creditColumn = -1;
+
+        for (Row row : sheet1) {
             if (row == null) continue;
             LineItem lineItem = new LineItem();
             boolean isLineItem = false;
             for (Cell cell : row) {
-                if (cell.getAddress().getRow() == 0 && cell.getAddress().getColumn() == 2) {
+                if (debitColumn == -1 && "Debit".equalsIgnoreCase(cell.getStringCellValue())) {
+                    debitColumn = cell.getColumnIndex();
+                } else if (creditColumn == -1 && "Credit".equalsIgnoreCase(cell.getStringCellValue())) {
+                    creditColumn = cell.getColumnIndex();
+                } else if (cell.getAddress().getRow() == 0 && cell.getAddress().getColumn() == 2) {
                     lineItem.setDescription(cell.getStringCellValue());
                 } else if (cell.getAddress().getColumn() == 1 && !cell.getStringCellValue().isEmpty()) {
                     isLineItem = true;
                     lineItem.setDescription(cell.getStringCellValue());
-                } else if (cell.getAddress().getColumn() == 2 && isLineItem) {
+                } else if (cell.getAddress().getColumn() == debitColumn && isLineItem) {
                     lineItem.setDebit(cell.getNumericCellValue());
-                } else if (cell.getAddress().getColumn() == 4 && isLineItem) {
+                } else if (cell.getAddress().getColumn() == creditColumn && isLineItem) {
                     lineItem.setCredit(cell.getNumericCellValue());
                 }
             }
