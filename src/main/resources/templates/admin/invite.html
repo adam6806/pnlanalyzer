@@ -9,6 +9,14 @@
 <body>
 <section layout:fragment="content">
     <h1 class="h2 border-bottom mb-4 text-center">User Invites</h1>
+    <div class="row mb-2">
+        <div class="col">
+            <form action="/admin/invite/add" method="get">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create a User Invite
+                </button>
+            </form>
+        </div>
+    </div>
     <table class="table table-striped table-bordered table-hover init-datatable display nowrap" style="width:100%">
         <caption>List of user invites</caption>
         <thead>
@@ -44,10 +52,7 @@
         </tr>
         </tbody>
     </table>
-    <form action="/admin/invite/add" method="get">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create a User Invite
-        </button>
-    </form>
+
     <script>
         $('.deleteUserForm').submit(function () {
             var confirmation = false;
