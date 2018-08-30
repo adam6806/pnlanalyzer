@@ -7,6 +7,7 @@ import com.github.adam6806.pnlanalyzer.repositories.CompanyRepository;
 import com.github.adam6806.pnlanalyzer.repositories.TrialBalanceReportRepository;
 import com.github.adam6806.pnlanalyzer.utility.DifferenceCalculator;
 import com.github.adam6806.pnlanalyzer.utility.ExcelParser;
+import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -15,11 +16,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,18 +47,20 @@ public class TrialBalanceReportController {
     }
 
     @RequestMapping(value = "/trialbalancereport", method = RequestMethod.GET)
-    public ModelAndView getTrialbalancereports() {
+    public ModelAndView getTrialbalancereports(@ModelAttribute Message message) {
         ModelAndView modelAndView = new ModelAndView();
         List<TrialBalanceReport> trialBalanceReports = trialBalanceReportRepository.findAll();
         modelAndView.addObject("trialbalancereports", trialBalanceReports);
+        modelAndView.addObject("message", message);
         modelAndView.setViewName("trialbalancereport");
         return modelAndView;
     }
 
     @RequestMapping(value = "/trialbalancereport", method = RequestMethod.POST)
-    public ModelAndView deleteTrialbalancereport(@RequestParam Long trialbalancereportId) {
+    public ModelAndView deleteTrialbalancereport(@RequestParam Long trialbalancereportId, RedirectAttributes redirectAttributes) {
         trialBalanceReportRepository.deleteById(trialbalancereportId);
         ModelAndView modelAndView = new ModelAndView();
+        redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Trial Balance Report was deleted successfully."));
         modelAndView.setViewName("redirect:/trialbalancereport");
         return modelAndView;
     }
@@ -107,16 +112,14 @@ public class TrialBalanceReportController {
     }
 
     @RequestMapping(value = "/trialbalancereport/createjournalentries", method = RequestMethod.GET)
-    public ModelAndView createJournalEntries(@RequestParam Long trialbalancereportId) {
+    public ModelAndView createJournalEntries(@RequestParam Long trialbalancereportId, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView();
         TrialBalanceReport current = trialBalanceReportRepository.getOne(trialbalancereportId);
         List<TrialBalanceReport> all = trialBalanceReportRepository.findAllByCompany_Id(current.getCompany().getId());
         all.removeIf(trialBalanceReport -> trialBalanceReport.getDate().compareTo(current.getDate()) >= 0);
         if (all.isEmpty()) {
-            modelAndView.addObject("errorMessage", "No Trial Balance Reports exist prior to the selected Trial Balance Report for this company.");
-            List<TrialBalanceReport> trialBalanceReports = trialBalanceReportRepository.findAll();
-            modelAndView.addObject("trialbalancereports", trialBalanceReports);
-            modelAndView.setViewName("trialbalancereport");
+            redirectAttributes.addFlashAttribute(new Message().setErrorMessage("No Trial Balance Reports exist prior to the selected Trial Balance Report for this company."));
+            modelAndView.setViewName("redirect:/trialbalancereport");
             return modelAndView;
         }
         modelAndView.addObject("trialbalancereports", all);

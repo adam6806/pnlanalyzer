@@ -41,43 +41,18 @@
                         Actions
                     </button>
                     <div class="dropdown-menu">
-                        <form class="deleteUserForm alert-danger" action="/admin/invite/delete" method="post">
+                        <form class="deleteInviteForm alert-danger" action="/admin/invite/delete" method="post">
                             <input type="hidden" name="inviteId" th:value="${invite.getId()}"/>
-                            <button type="submit" class="btn btn-danger dropdown-item"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
-                            </button>
                         </form>
+                        <button onclick="deleteModal('Are you sure you want to delete this invite?', '.deleteInviteForm')" class="btn btn-danger dropdown-item text-danger"><i
+                                class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                        </button>
                     </div>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-
-    <script>
-        $('.deleteUserForm').submit(function () {
-            var confirmation = false;
-            bootbox.confirm({
-                title: "Delete Confirmation",
-                message: "Are you sure you want to delete this invite?",
-                buttons: {
-                    cancel: {
-                        label: 'Cancel',
-                        className: 'btn-secondary'
-                    },
-                    confirm: {
-                        label: 'Delete',
-                        className: 'btn-danger'
-                    }
-                },
-                centerVertical: true,
-                callback: function (result) {
-                    confirmation = result;
-                }
-            });
-            return confirmation;
-
-        });
-    </script>
 </section>
 </body>
 </html>

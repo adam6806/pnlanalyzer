@@ -5,12 +5,14 @@ import com.github.adam6806.pnlanalyzer.entities.User;
 import com.github.adam6806.pnlanalyzer.repositories.RoleRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
 import com.github.adam6806.pnlanalyzer.services.RoleService;
+import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -42,11 +44,12 @@ public class RoleController {
 
     @RequestMapping(value = "/admin/edituserrole", method = RequestMethod.POST)
     @Transactional
-    public ModelAndView saveUserRoles(@RequestParam Long userId, @RequestParam String roleSelect) {
+    public ModelAndView saveUserRoles(@RequestParam Long userId, @RequestParam String roleSelect, RedirectAttributes redirectAttributes) {
         User user = userRepository.getOne(userId);
         user.setRoles(roleService.getRolesForRole(roleSelect));
         userRepository.save(user);
         ModelAndView modelAndView = new ModelAndView();
+        redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("User role updated successfully."));
         modelAndView.setViewName("redirect:usermanagement");
         return modelAndView;
     }

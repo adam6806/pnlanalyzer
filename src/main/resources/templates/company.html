@@ -19,7 +19,7 @@
         </div>
     </div>
     <table class="table table-striped table-bordered table-hover init-datatable display nowrap" style="width:100%">
-        <caption>List of users</caption>
+        <caption>List of companies</caption>
         <thead>
         <tr>
             <th scope="col">Name</th>
@@ -38,49 +38,21 @@
                     <div class="dropdown-menu">
                         <form action="/company/editcompany" method="GET">
                             <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fas fa-pen"></i>&nbsp;&nbsp;Edit
-                            </button>
+                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fas fa-pen"></i>&nbsp;&nbsp;Edit</button>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteCompanyForm alert-danger"
-                              action="/company"
-                              method="POST">
+                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteCompanyForm alert-danger" action="/company" method="POST">
                             <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                            <button type="submit" class="btn btn-danger dropdown-item"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
-                            </button>
                         </form>
+                        <button onclick="deleteModal('Are you sure you want to delete this company? Deleting this company will also delete all Trial Balance Reports associated with this company. This action is irreversible.', '.deleteCompanyForm');"
+                                class="btn btn-danger dropdown-item text-danger"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                        </button>
                     </div>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-
-    <script>
-        $('.deleteCompanyForm').submit(function () {
-            var confirmation = false;
-            bootbox.confirm({
-                title: "Delete Confirmation",
-                message: "Are you sure you want to delete this company? Deleting this company will also delete all Trial Balance Reports associated with this company. This action is irreversible.",
-                buttons: {
-                    cancel: {
-                        label: 'Cancel',
-                        className: 'btn-secondary'
-                    },
-                    confirm: {
-                        label: 'Delete',
-                        className: 'btn-danger'
-                    }
-                },
-                centerVertical: true,
-                callback: function (result) {
-                    confirmation = result;
-                }
-            });
-            return confirmation;
-
-        });
-    </script>
 </section>
 </body>
 </html>

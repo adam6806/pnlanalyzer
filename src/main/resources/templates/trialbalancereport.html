@@ -57,40 +57,16 @@
                         <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="deleteTbrForm alert-danger"
                               action="/trialbalancereport" method="POST">
                             <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
-                            <button type="submit" class="btn btn-danger dropdown-item"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
-                            </button>
                         </form>
+                        <button onclick="deleteModal('Are you sure you want to delete this Trial Balance Report? This action is irreversible.', '.deleteTbrForm')"
+                                class="btn btn-danger dropdown-item text-danger"><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                        </button>
                     </div>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-    <script>
-        $('.deleteTbrForm').submit(function () {
-            var confirmation = false;
-            bootbox.confirm({
-                title: "Delete Confirmation",
-                message: "Are you sure you want to delete this Trial Balance Report? This action is irreversible.",
-                buttons: {
-                    cancel: {
-                        label: 'Cancel',
-                        className: 'btn-secondary'
-                    },
-                    confirm: {
-                        label: 'Delete',
-                        className: 'btn-danger'
-                    }
-                },
-                centerVertical: true,
-                callback: function (result) {
-                    confirmation = result;
-                }
-            });
-            return confirmation;
-
-        });
-    </script>
 </section>
 </body>
 </html>

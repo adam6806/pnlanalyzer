@@ -4,16 +4,19 @@ import com.github.adam6806.pnlanalyzer.entities.User;
 import com.github.adam6806.pnlanalyzer.forms.PasswordUpdateForm;
 import com.github.adam6806.pnlanalyzer.forms.ProfileUpdateForm;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
+import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -30,17 +33,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/usermanagement", method = RequestMethod.GET)
-    public ModelAndView getUserManagement() {
+    public ModelAndView getUserManagement(@ModelAttribute Message message) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("users", userRepository.findAll());
         modelAndView.setViewName("admin/usermanagement");
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 
     @RequestMapping(value = "/admin/usermanagement", method = RequestMethod.POST)
-    public ModelAndView getUserManagement(@RequestParam Long userId) {
+    public ModelAndView getUserManagement(@RequestParam Long userId, RedirectAttributes redirectAttributes) {
         userRepository.deleteById(userId);
         ModelAndView modelAndView = new ModelAndView();
+        redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("User was deleted successfully."));
         modelAndView.setViewName("redirect:usermanagement");
         return modelAndView;
     }
@@ -71,7 +76,7 @@ public class UserController {
             user.setName(profileUpdateForm.getFirstName());
             user.setLastName(profileUpdateForm.getLastName());
             user.setEmail(profileUpdateForm.getEmail());
-            modelAndView.addObject("successMessage", "Your profile was successfully updated.");
+            modelAndView.addObject("message", new Message().setSuccessMessage("Your profile was successfully updated."));
         }
         modelAndView.addObject("profileUpdateForm", profileUpdateForm);
         modelAndView.setViewName("profile");
@@ -91,7 +96,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile/updatepassword", method = RequestMethod.POST)
-    public ModelAndView updatePassword(@Valid PasswordUpdateForm passwordUpdateForm, BindingResult bindingResult) {
+    public ModelAndView updatePassword(@Valid PasswordUpdateForm passwordUpdateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -101,7 +106,7 @@ public class UserController {
         } else {
             User user = userRepository.getOne(passwordUpdateForm.getUserId());
             user.setPassword(passwordEncoder.encode(passwordUpdateForm.getPassword2()));
-            modelAndView.addObject("successMessage", "Your profile was successfully updated.");
+            redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Your profile was successfully updated."));
             modelAndView.setViewName("redirect:");
         }
         return modelAndView;
