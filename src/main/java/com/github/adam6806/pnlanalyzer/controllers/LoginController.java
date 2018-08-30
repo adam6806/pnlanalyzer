@@ -60,6 +60,16 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
+
+            // In the case that someone who has been invited decides to manually register instead of clicking the button in the email,
+            // pull their invite by the email if one exists and set the appropriate roles on their account. Delete the invite.
+            Invite invite = userInviteRepository.findInviteByEmail(user.getEmail());
+            if (invite != null) {
+                Set<Role> roles = new HashSet<>(invite.getRoles());
+                user.setRoles(roles);
+                userInviteRepository.delete(invite);
+            }
+
             userService.saveUser(user);
             modelAndView.addObject("email", user.getEmail());
             modelAndView.setViewName("login");
