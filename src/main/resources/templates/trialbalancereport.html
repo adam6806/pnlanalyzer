@@ -11,11 +11,11 @@
 <body>
 <section layout:fragment="content">
     <div class="row">
-        <div class="col" th:if="${message}">
-            <div th:if="${message.getErrorMessage()}" class="alert alert-danger top-message text-center" role="alert">
+        <div class="col" th:if="${message != null}">
+            <div th:if="${message.getErrorMessage() != null}" class="alert alert-danger top-message text-center" role="alert">
                 <span th:text="${message.getErrorMessage()}"></span>
             </div>
-            <div th:if="${message.getSuccessMessage()}" class="alert alert-success top-message text-center" role="alert">
+            <div th:if="${message.getSuccessMessage() != null}" class="alert alert-success top-message text-center" role="alert">
                 <span th:text="${message.getSuccessMessage()}"></span>
             </div>
         </div>
