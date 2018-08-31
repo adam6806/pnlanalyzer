@@ -13,18 +13,23 @@
     <h1 class="h2 border-bottom mb-4 text-center"
         th:text="${prevTbrId != null} ? 'Journal Entries' : 'Line Items'"></h1>
 
-    <div class="row mb-2" th:style="${prevTbrId != null} ? 'display:block' : 'display:none'">
+    <div class="row mb-2" th:style="${prevTbrId != null} ? '' : 'display:none'">
         <div class="col">
             <form class="mx-1" action="/trialbalancereport/downloadjournalentry" method="GET">
                 <input type="hidden" name="prevTbr" th:value="${prevTbrId}"/>
                 <input type="hidden" name="currentTbr" th:value="${currentTbrId}"/>
-                <button type="submit" class="btn btn-primary">Export to QuickBooks IIF File</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-download"></i>&nbsp;&nbsp;Export to QuickBooks IIF File</button>
             </form>
+        </div>
+    </div>
+    <div class="row mb-2" th:style="${prevTbrId == null} ? '' : 'display:none'">
+        <div class="col">
+            <a class="btn btn-success" href="/trialbalancereport/addtrialbalancereport"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add a Trial Balance Report</a>
         </div>
     </div>
     <div class="row mb-2">
         <div class="col">
-            <a class="btn btn-secondary" href="/trialbalancereport">Back to Trial Balance Reports</a>
+            <a class="btn btn-secondary" href="/trialbalancereport"><i class="fa fa-backward"></i>&nbsp;&nbsp;Back to Trial Balance Reports</a>
         </div>
     </div>
     <div class="row">
