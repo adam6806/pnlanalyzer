@@ -75,16 +75,6 @@
     <div class="row">
         <main role="main" class="mx-auto col-lg-8 col-md-10 col-sm-12">
             <div class="align-items-center mt-4">
-                <div class="row">
-                    <div class="col" th:if="${message}">
-                        <div th:if="${message.getErrorMessage()}" class="alert alert-danger top-message text-center" role="alert">
-                            <span th:text="${message.getErrorMessage()}"></span>
-                        </div>
-                        <div th:if="${message.getSuccessMessage()}" class="alert alert-success top-message text-center" role="alert">
-                            <span th:text="${message.getSuccessMessage()}"></span>
-                        </div>
-                    </div>
-                </div>
                 <section layout:fragment="content">
                     <h1 class="h2 border-bottom text-center">PNL Analyzer</h1>
                     <p class="mt-3 text-center">Welcome to the PNL Analyzer! Here you can add Companies. You can then upload Trial Balance Report Files for those companies. Once
