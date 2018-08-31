@@ -119,7 +119,7 @@ public class TrialBalanceReportController {
             modelAndView.setViewName("redirect:/trialbalancereport");
             return modelAndView;
         }
-        Comparator<TrialBalanceReport> comparator = (t1, t2) -> t1.getDate().compareTo(t2.getDate());
+        Comparator<TrialBalanceReport> comparator = Comparator.comparing(TrialBalanceReport::getDate);
         all.sort(comparator.reversed());
         modelAndView.addObject("trialbalancereports", all);
         modelAndView.addObject("currentTbrId", current.getId());
