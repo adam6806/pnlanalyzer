@@ -29,10 +29,7 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class TrialBalanceReportController {
@@ -122,6 +119,8 @@ public class TrialBalanceReportController {
             modelAndView.setViewName("redirect:/trialbalancereport");
             return modelAndView;
         }
+        Comparator<TrialBalanceReport> comparator = Comparator.comparing(TrialBalanceReport::getDate);
+        all.sort(comparator.reversed());
         modelAndView.addObject("trialbalancereports", all);
         modelAndView.addObject("currentTbrId", current.getId());
         modelAndView.setViewName("trialbalancereport/createjournalentries");
