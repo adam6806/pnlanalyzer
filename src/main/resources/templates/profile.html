@@ -9,6 +9,16 @@
 
 <body>
 <section layout:fragment="content">
+    <div class="row">
+        <div class="col" th:if="${message}">
+            <div th:if="${message.getErrorMessage()}" class="alert alert-danger top-message text-center" role="alert">
+                <span th:text="${message.getErrorMessage()}"></span>
+            </div>
+            <div th:if="${message.getSuccessMessage()}" class="alert alert-success top-message text-center" role="alert">
+                <span th:text="${message.getSuccessMessage()}"></span>
+            </div>
+        </div>
+    </div>
     <h1 class="h2 border-bottom mb-4 text-center">Profile</h1>
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-9 col-sm-10">
