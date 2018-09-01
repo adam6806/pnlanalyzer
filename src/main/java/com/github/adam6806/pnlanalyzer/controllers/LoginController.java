@@ -60,7 +60,7 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/invite", method = RequestMethod.POST)
+    @RequestMapping(value = "/invite/accept", method = RequestMethod.POST)
     public ModelAndView createUserFromInvite(@Valid User user, BindingResult bindingResult, @RequestParam String inviteId) {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByEmail(user.getEmail());
@@ -70,6 +70,7 @@ public class LoginController {
                             "There is already a user registered with the email provided");
         }
         if (bindingResult.hasErrors()) {
+            modelAndView.addObject("inviteId", inviteId);
             modelAndView.setViewName("invite");
         } else {
             Invite invite = userInviteRepository.getOne(UUID.fromString(inviteId));

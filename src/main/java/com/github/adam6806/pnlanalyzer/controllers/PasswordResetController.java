@@ -101,6 +101,7 @@ public class PasswordResetController {
                             "*The password reset request has expired. If you believe this message is in error contact asmith0935@gmail.com or any administrator.");
         }
         if (bindingResult.hasErrors()) {
+            modelAndView.addObject("resetId", passwordResetForm.getResetId());
             modelAndView.setViewName("passwordreset");
         } else {
             passwordResetRepository.delete(passwordReset);
