@@ -50,14 +50,16 @@
                             <input type="hidden" name="companyId" th:value="${company.getId()}"/>
                             <button type="submit" class="btn btn-primary dropdown-item"><i class="fas fa-pen"></i>&nbsp;&nbsp;Edit</button>
                         </form>
-                        <div class="dropdown-divider"></div>
-                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" th:id="${company.getId()}" action="/company" method="POST">
-                            <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                        </form>
-                        <button th:onclick="|deleteModal('${company.getId()}', 'Are you sure you want to delete this company? Deleting this company will also delete all Trial Balance Reports associated with this company. This action is irreversible.')|"
-                                class="btn btn-danger dropdown-item text-danger">
-                            <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
-                        </button>
+                        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                            <div class="dropdown-divider"></div>
+                            <form th:id="${company.getId()}" action="/company" method="POST">
+                                <input type="hidden" name="companyId" th:value="${company.getId()}"/>
+                            </form>
+                            <button th:onclick="|deleteModal('${company.getId()}', 'Are you sure you want to delete this company? Deleting this company will also delete all Trial Balance Reports associated with this company. This action is irreversible.')|"
+                                    class="btn btn-danger dropdown-item text-danger">
+                                <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                            </button>
+                        </div>
                     </div>
                 </div>
             </td>

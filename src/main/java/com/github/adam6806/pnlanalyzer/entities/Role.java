@@ -6,6 +6,12 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role {
+
+    public Role setRole(String role) {
+        this.role = role;
+        return this;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
@@ -29,9 +35,7 @@ public class Role {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+    public enum Roles {ROLE_ADMIN, ROLE_USER}
 
     @Override
     public boolean equals(Object obj) {

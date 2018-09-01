@@ -1,11 +1,11 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
 import com.github.adam6806.pnlanalyzer.entities.Invite;
+import com.github.adam6806.pnlanalyzer.entities.Role;
 import com.github.adam6806.pnlanalyzer.entities.User;
 import com.github.adam6806.pnlanalyzer.repositories.RoleRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserInviteRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
-import com.github.adam6806.pnlanalyzer.services.RoleService;
 import com.github.adam6806.pnlanalyzer.services.SendGridEmailService;
 import com.github.adam6806.pnlanalyzer.services.UserService;
 import com.github.adam6806.pnlanalyzer.utility.Message;
@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -29,16 +31,14 @@ public class UserInviteController {
 
     private final UserInviteRepository userInviteRepository;
     private final RoleRepository roleRepository;
-    private final RoleService roleService;
     private final SendGridEmailService sendGridEmailService;
     private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public UserInviteController(UserInviteRepository userInviteRepository, RoleRepository roleRepository, RoleService roleService, SendGridEmailService sendGridEmailService, UserRepository userRepository, UserService userService) {
+    public UserInviteController(UserInviteRepository userInviteRepository, RoleRepository roleRepository, SendGridEmailService sendGridEmailService, UserRepository userRepository, UserService userService) {
         this.userInviteRepository = userInviteRepository;
         this.roleRepository = roleRepository;
-        this.roleService = roleService;
         this.sendGridEmailService = sendGridEmailService;
         this.userRepository = userRepository;
         this.userService = userService;
@@ -59,13 +59,13 @@ public class UserInviteController {
         ModelAndView modelAndView = new ModelAndView();
         Invite invite = new Invite();
         modelAndView.addObject("invite", invite);
-        modelAndView.addObject("roles", roleRepository.findAll());
+        modelAndView.addObject("allRoles", roleRepository.findAll());
         modelAndView.setViewName("admin/invite/add");
         return modelAndView;
     }
 
     @RequestMapping(value = "/admin/invite/add", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid Invite invite, BindingResult bindingResult, @RequestParam String roleSelect, RedirectAttributes redirectAttributes) {
+    public ModelAndView createNewUser(@Valid Invite invite, BindingResult bindingResult, @RequestParam String[] selectedRoles, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView();
         Invite inviteExists = userInviteRepository.findInviteByEmail(invite.getEmail());
         if (inviteExists != null) {
@@ -87,7 +87,12 @@ public class UserInviteController {
             User admin = userRepository.findByEmail(auth.getName());
             invite.setAdminFirstName(admin.getName());
             invite.setAdminLastName(admin.getLastName());
-            invite.setRoles(roleService.getRolesForRole(roleSelect));
+            Set<Role> newRoles = new HashSet<>();
+            for (String selectedRole : selectedRoles) {
+                Role role = roleRepository.findByRole(selectedRole);
+                newRoles.add(role);
+            }
+            invite.setRoles(new HashSet<>(newRoles));
             Invite savedInvite = userInviteRepository.save(invite);
             sendGridEmailService.sendUserInvite(savedInvite);
             redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Invite has been created and sent."));
