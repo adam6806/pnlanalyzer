@@ -3,7 +3,6 @@ package com.github.adam6806.pnlanalyzer.entities;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,7 +34,7 @@ public class Invite {
     @Column(name = "admin_last_name")
     private String adminLastName;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "invite_role", joinColumns = @JoinColumn(name = "invite_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
@@ -51,47 +50,53 @@ public class Invite {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Invite setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public Invite setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public Invite setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getAdminFirstName() {
         return adminFirstName;
     }
 
-    public void setAdminFirstName(String adminFirstName) {
+    public Invite setAdminFirstName(String adminFirstName) {
         this.adminFirstName = adminFirstName;
+        return this;
     }
 
     public String getAdminLastName() {
         return adminLastName;
     }
 
-    public void setAdminLastName(String adminLastName) {
+    public Invite setAdminLastName(String adminLastName) {
         this.adminLastName = adminLastName;
+        return this;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public Invite setRoles(Set<Role> roles) {
         this.roles = roles;
+        return this;
     }
 }

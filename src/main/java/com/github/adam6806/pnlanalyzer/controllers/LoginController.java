@@ -38,45 +38,6 @@ public class LoginController {
         return modelAndView;
     }
 
-
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public ModelAndView registration() {
-        ModelAndView modelAndView = new ModelAndView();
-        User user = new User();
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("registration");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByEmail(user.getEmail());
-        if (userExists != null) {
-            bindingResult
-                    .rejectValue("email", "error.user",
-                            "*There is already a user registered with the email provided");
-        }
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
-        } else {
-
-            // In the case that someone who has been invited decides to manually register instead of clicking the button in the email,
-            // pull their invite by the email if one exists and set the appropriate roles on their account. Delete the invite.
-            Invite invite = userInviteRepository.findInviteByEmail(user.getEmail());
-            if (invite != null) {
-                Set<Role> roles = new HashSet<>(invite.getRoles());
-                user.setRoles(roles);
-                userInviteRepository.delete(invite);
-            }
-
-            userService.saveUser(user);
-            modelAndView.addObject("email", user.getEmail());
-            modelAndView.setViewName("login");
-        }
-        return modelAndView;
-    }
-
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();

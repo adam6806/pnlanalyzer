@@ -9,25 +9,22 @@
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom mb-4 text-center">Create Invite</h1>
+    <h1 class="h2 border-bottom mb-4 text-center">Edit User</h1>
     <div class="row justify-content-center">
-        <form class="col-lg-8 col-md-9 col-sm-10" th:action="@{/admin/invite/add}" th:object="${invite}" method="post">
-
-            <div th:replace="fragments :: formField (field='firstName', label = 'First Name', type = 'text')"></div>
+        <form th:object="${user}" class="col-lg-8 col-md-9 col-sm-10" th:action="@{/admin/edituser}" method="post">
+            <div th:replace="fragments :: formField (field='name', label = 'First Name', type = 'text')"></div>
             <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
             <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
-
+            <div th:replace="fragments :: formField (field='password', label = 'Password', type = 'password')"></div>
             <div class="form-group">
                 <div th:block th:each="role : ${allRoles}">
-                    <input type="checkbox" th:id="|role${role.getId()}|" name="selectedRoles" th:value="${role.getRole()}">
+                    <input type="checkbox" th:id="|role${role.getId()}|" name="selectedRoles" th:value="${role.getRole()}" th:checked="${user.getRoles().contains(role)}">
                     <label th:for="|role${role.getId()}|" th:text="${role.getRole()}"></label>
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-envelope-open"></i>&nbsp;&nbsp;Create
-                and Send Invite
-            </button>
-            <a class="btn btn-md btn-secondary btn-block" role="button" href="/admin/invite">Back to Invites</a>
+            <div th:replace="fragments :: hiddenField (field='id')"></div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-secondary" href="/admin/usermanagement">Cancel</a>
         </form>
     </div>
 </section>
