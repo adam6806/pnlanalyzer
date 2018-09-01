@@ -20,7 +20,8 @@
             <div class="form-group">
                 <div th:block th:each="role : ${allRoles}">
                     <input type="checkbox" th:id="|role${role.getId()}|" name="selectedRoles" th:value="${role.getRole()}">
-                    <label th:for="|role${role.getId()}|" th:text="${role.getRole()}"></label>
+                    <label th:for="|role${role.getId()}|"><span th:classappend="${role.getRole().contains('ADMIN') ? 'badge-danger' : 'badge-info'}" class="badge"
+                                                                th:text="${role.getRole()}"></span></label>
                 </div>
             </div>
 
