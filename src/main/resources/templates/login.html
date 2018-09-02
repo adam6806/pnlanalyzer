@@ -17,21 +17,36 @@
 
 <form th:action="@{/login}" method="POST" class="form-signin">
     <h1 class="h3 mb-3 font-weight-normal">Welcome</h1>
-    <br/>
 
-    <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}"
-           class="form-control"/> <br/>
-    <input type="password" th:placeholder="Password"
-           id="password" name="password" class="form-control"/> <br/>
+    <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}" class="form-control mb-3"/>
+    <div class="input-group mb-3">
+        <input type="password" th:placeholder="Password" id="password" name="password" class="form-control"/>
+        <div class="input-group-append">
+            <button type="button" onclick="togglePassword('password', 'passwordIcon')" class="btn btn-secondary form-control">
+                <icon id="passwordIcon" class="fa fa-eye"></icon>
+            </button>
+        </div>
+    </div>
 
     <div align="center" th:if="${param.error}">
-        <p class="alert-danger">Email or Password invalid, please verify. <br><a
-                href="/passwordreset/request">Forgot
-            Password?</a></p>
+        <p class="alert-danger">Email or Password invalid, please verify. <br><a href="/passwordreset/request">Forgot Password?</a></p>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
-            th:text="Login"></button>
+    <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
 </form>
+
+<script>
+    function togglePassword(inputId, passwordIconId) {
+        var input = $('#' + inputId);
+        var icon = $('#' + passwordIconId);
+        if (input.prop('type') === 'password') {
+            input.prop('type', 'text');
+            icon.addClass('fa-eye-slash').removeClass('fa-eye');
+        } else {
+            input.prop('type', 'password');
+            icon.addClass('fa-eye').removeClass('fa-eye-slash');
+        }
+    }
+</script>
 
 </body>
 </html>

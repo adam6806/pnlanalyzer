@@ -22,7 +22,7 @@
             <div th:replace="fragments :: formField (field='name', label = 'First Name', type = 'text')"></div>
             <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
             <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
-            <div th:replace="fragments :: formField (field='password', label = 'Password', type = 'password')"></div>
+            <div th:replace="fragments :: passwordField (field='password', label = 'Password')"></div>
         </div>
         <input type="hidden" name="inviteId" th:value="${inviteId}">
 
@@ -30,5 +30,18 @@
         <a class="btn btn-md btn-secondary btn-block" role="button" href="/login">Back to Login</a>
     </form>
 </div>
+<script>
+    function togglePassword(inputId, passwordIconId) {
+        var input = $('#' + inputId);
+        var icon = $('#' + passwordIconId);
+        if (input.prop('type') === 'password') {
+            input.prop('type', 'text');
+            icon.addClass('fa-eye-slash').removeClass('fa-eye');
+        } else {
+            input.prop('type', 'password');
+            icon.addClass('fa-eye').removeClass('fa-eye-slash');
+        }
+    }
+</script>
 </body>
 </html>
