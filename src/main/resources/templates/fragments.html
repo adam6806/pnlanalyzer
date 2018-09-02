@@ -13,6 +13,20 @@
     <div th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="invalid-feedback"></div>
 </div>
 
+<div th:fragment="passwordField (field, label)" class="form-group">
+    <label th:for="${field}" th:text="${label}"></label>
+    <div class="input-group">
+        <input type="password" th:field="*{__${field}__}" th:placeholder="${label}" class="form-control"
+               th:errorclass="is-invalid" th:id="${field}"/>
+        <div class="input-group-append">
+            <button type="button" th:onclick="'togglePassword(\'' + ${field} + '\', \'' + ${field} + 'Icon\');'" class="btn btn-secondary form-control">
+                <icon th:id="${field} + 'Icon'" class="fa fa-eye"></icon>
+            </button>
+        </div>
+    </div>
+    <div th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="invalid-feedback"></div>
+</div>
+
 <div th:fragment="hiddenField (field)" class="form-group">
     <input type="hidden" th:field="*{__${field}__}"/>
 </div>

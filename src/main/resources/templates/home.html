@@ -11,12 +11,12 @@
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css"/>
     <link rel="stylesheet" href="/webjars/datatables-responsive/2.2.1/css/responsive.bootstrap4.scss"/>
-    <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"/>
+    <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}">
 
     <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
-    <script src="/webjars/font-awesome/5.2.0/js/all.js"></script>
+    <script src="/webjars/font-awesome/5.2.0/js/all.min.js"></script>
     <script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="/webjars/datatables-responsive/2.2.1/js/dataTables.responsive.js"></script>
@@ -125,6 +125,18 @@
                 }
             }
         });
+    }
+
+    function togglePassword(inputId, passwordIconId) {
+        var input = $('#' + inputId);
+        var icon = $('#' + passwordIconId);
+        if (input.prop('type') === 'password') {
+            input.prop('type', 'text');
+            icon.addClass('fa-eye-slash').removeClass('fa-eye');
+        } else {
+            input.prop('type', 'password');
+            icon.addClass('fa-eye').removeClass('fa-eye-slash');
+        }
     }
 </script>
 </body>
