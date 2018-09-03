@@ -88,6 +88,7 @@ public class UserController {
             user.setName(profileUpdateForm.getFirstName());
             user.setLastName(profileUpdateForm.getLastName());
             user.setEmail(profileUpdateForm.getEmail());
+            userRepository.save(user);
             modelAndView.addObject("message", new Message().setSuccessMessage("Your profile was successfully updated."));
         }
         modelAndView.addObject("profileUpdateForm", profileUpdateForm);
@@ -118,6 +119,7 @@ public class UserController {
         } else {
             User user = userRepository.getOne(passwordUpdateForm.getUserId());
             user.setPassword(passwordEncoder.encode(passwordUpdateForm.getPassword2()));
+            userRepository.save(user);
             redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Your profile was successfully updated."));
             modelAndView.setViewName("redirect:");
         }
