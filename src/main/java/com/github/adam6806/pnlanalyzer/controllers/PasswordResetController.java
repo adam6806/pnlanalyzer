@@ -3,11 +3,9 @@ package com.github.adam6806.pnlanalyzer.controllers;
 import com.github.adam6806.pnlanalyzer.entities.PasswordReset;
 import com.github.adam6806.pnlanalyzer.entities.User;
 import com.github.adam6806.pnlanalyzer.forms.PasswordResetForm;
-import com.github.adam6806.pnlanalyzer.repositories.PasswordResetRepository;
-import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
-import com.github.adam6806.pnlanalyzer.services.SendGridEmailService;
+import com.github.adam6806.pnlanalyzer.services.PasswordResetService;
+import com.github.adam6806.pnlanalyzer.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,23 +14,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
-import java.util.UUID;
 
 @Controller
 public class PasswordResetController {
 
-    private final PasswordResetRepository passwordResetRepository;
-    private final SendGridEmailService sendGridEmailService;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final PasswordResetService passwordResetService;
 
     @Autowired
-    public PasswordResetController(SendGridEmailService sendGridEmailService, UserRepository userRepository, PasswordResetRepository passwordResetRepository, PasswordEncoder passwordEncoder) {
-
-        this.sendGridEmailService = sendGridEmailService;
-        this.userRepository = userRepository;
-        this.passwordResetRepository = passwordResetRepository;
-        this.passwordEncoder = passwordEncoder;
+    public PasswordResetController(UserService userService, PasswordResetService passwordResetService) {
+        this.userService = userService;
+        this.passwordResetService = passwordResetService;
     }
 
     @RequestMapping(value = "/passwordreset/request", method = RequestMethod.GET)
@@ -47,8 +39,8 @@ public class PasswordResetController {
     @RequestMapping(value = "/passwordreset/request", method = RequestMethod.POST)
     public ModelAndView addPasswordReset(@Valid PasswordReset passwordReset, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        PasswordReset passwordResetExists = passwordResetRepository.findPasswordResetByEmail(passwordReset.getEmail());
-        User user = userRepository.findByEmail(passwordReset.getEmail());
+        PasswordReset passwordResetExists = passwordResetService.findPasswordResetByEmail(passwordReset.getEmail());
+        User user = userService.findUserByEmail(passwordReset.getEmail());
         if (passwordResetExists != null) {
             bindingResult
                     .rejectValue("email", "error.passwordReset",
@@ -61,8 +53,7 @@ public class PasswordResetController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("passwordreset/request");
         } else {
-            passwordResetRepository.save(passwordReset);
-            sendGridEmailService.sendPasswordReset(passwordReset, user);
+            passwordResetService.createAndSendPasswordReset(passwordReset, user);
             modelAndView.addObject("successMessage", "A password reset email has been sent to you. Please follow the instructions in the email to reset your password.");
             modelAndView.setViewName("login");
         }
@@ -72,7 +63,7 @@ public class PasswordResetController {
     @RequestMapping(value = "/passwordreset", method = RequestMethod.GET)
     public ModelAndView getPasswordResetForm(@PathParam("resetId") String resetId) {
         ModelAndView modelAndView = new ModelAndView();
-        PasswordReset passwordReset = passwordResetRepository.getOne(UUID.fromString(resetId));
+        PasswordReset passwordReset = passwordResetService.findPasswordResetById(resetId);
         if (passwordReset == null) {
             modelAndView.addObject("errorMessage", "The password reset link has expired. Please create a new password reset request.");
             modelAndView.setViewName("login");
@@ -88,8 +79,8 @@ public class PasswordResetController {
     @RequestMapping(value = "/passwordreset", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid PasswordResetForm passwordResetForm, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        PasswordReset passwordReset = passwordResetRepository.getOne(UUID.fromString(passwordResetForm.getResetId()));
-        User user = userRepository.findByEmail(passwordReset.getEmail());
+        PasswordReset passwordReset = passwordResetService.findPasswordResetById(passwordResetForm.getResetId());
+        User user = userService.findUserByEmail(passwordReset.getEmail());
         if (user == null) {
             bindingResult
                     .rejectValue("password", "error.passwordReset",
@@ -104,9 +95,7 @@ public class PasswordResetController {
             modelAndView.addObject("resetId", passwordResetForm.getResetId());
             modelAndView.setViewName("passwordreset");
         } else {
-            passwordResetRepository.delete(passwordReset);
-            user.setPassword(passwordEncoder.encode(passwordResetForm.getPassword()));
-            userRepository.save(user);
+            passwordResetService.completePasswordReset(passwordReset, user, passwordResetForm.getPassword());
             modelAndView.addObject("successMessage", "Your password was successfully reset!");
             modelAndView.setViewName("login");
         }

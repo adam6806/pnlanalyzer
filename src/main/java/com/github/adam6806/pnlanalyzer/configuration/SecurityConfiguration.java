@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.configuration;
 
-import com.github.adam6806.pnlanalyzer.services.UserServiceImpl;
+import com.github.adam6806.pnlanalyzer.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

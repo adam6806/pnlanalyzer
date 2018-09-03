@@ -13,14 +13,14 @@ public class Company {
     @Column(name = "company_id")
     private Long id;
 
-    @Column(name = "name")
+    @OrderBy
+    @Column(name = "name", unique = true)
     @NotEmpty(message = "*Please provide the company name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "company")
-    private Set<TrialBalanceReport> trialBalanceReport;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Set<TrialBalanceReport> trialBalanceReports;
 
     public Long getId() {
         return id;
@@ -38,11 +38,11 @@ public class Company {
         this.name = name;
     }
 
-    public Set<TrialBalanceReport> getTrialBalanceReport() {
-        return trialBalanceReport;
+    public Set<TrialBalanceReport> getTrialBalanceReports() {
+        return trialBalanceReports;
     }
 
-    public void setTrialBalanceReport(Set<TrialBalanceReport> trialBalanceReport) {
-        this.trialBalanceReport = trialBalanceReport;
+    public void setTrialBalanceReports(Set<TrialBalanceReport> trialBalanceReports) {
+        this.trialBalanceReports = trialBalanceReports;
     }
 }

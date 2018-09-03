@@ -15,7 +15,8 @@ public class Invite {
     @Column(name = "invite_id")
     private UUID id;
 
-    @Column(name = "email")
+    @OrderBy
+    @Column(name = "email", unique = true)
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
     private String email;

@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer.utility;
+package com.github.adam6806.pnlanalyzer.services;
 
 import com.github.adam6806.pnlanalyzer.entities.LineItem;
 import com.github.adam6806.pnlanalyzer.entities.TrialBalanceReport;
@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,9 +19,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ExcelParser {
+@Service
+public class ExcelParserService {
 
-    public static List<LineItem> parseExcelFile(InputStream excelFile) throws IOException, InvalidFormatException {
+    public List<LineItem> parseExcelFile(InputStream excelFile) throws IOException, InvalidFormatException {
 
         List<LineItem> lineItemList = new ArrayList<>();
 
@@ -65,7 +67,7 @@ public class ExcelParser {
         return lineItemList;
     }
 
-    public static InputStream generateJournalEntries(List<LineItem> lineItems, TrialBalanceReport current) throws IOException {
+    public InputStream generateJournalEntries(List<LineItem> lineItems, TrialBalanceReport current) throws IOException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
 

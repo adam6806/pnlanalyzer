@@ -1,10 +1,9 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
 import com.github.adam6806.pnlanalyzer.entities.Invite;
-import com.github.adam6806.pnlanalyzer.entities.Role;
 import com.github.adam6806.pnlanalyzer.entities.User;
-import com.github.adam6806.pnlanalyzer.repositories.UserInviteRepository;
-import com.github.adam6806.pnlanalyzer.services.UserServiceImpl;
+import com.github.adam6806.pnlanalyzer.services.UserInviteService;
+import com.github.adam6806.pnlanalyzer.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,20 +15,17 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Controller
 public class LoginController {
 
     private final UserServiceImpl userService;
-    private final UserInviteRepository userInviteRepository;
+    private final UserInviteService userInviteService;
 
     @Autowired
-    public LoginController(UserServiceImpl userService, UserInviteRepository userInviteRepository) {
+    public LoginController(UserServiceImpl userService, UserInviteService userInviteService) {
         this.userService = userService;
-        this.userInviteRepository = userInviteRepository;
+        this.userInviteService = userInviteService;
     }
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
@@ -50,11 +46,11 @@ public class LoginController {
     @RequestMapping(value = "/invite", method = RequestMethod.GET)
     public ModelAndView invite(@PathParam("inviteId") String inviteId) {
         ModelAndView modelAndView = new ModelAndView();
-        Invite invite = userInviteRepository.getOne(UUID.fromString(inviteId));
-        User user = new User();
-        user.setName(invite.getFirstName());
-        user.setLastName(invite.getLastName());
-        user.setEmail(invite.getEmail());
+        Invite invite = userInviteService.findUserInviteById(inviteId);
+        User user = new User()
+                .setName(invite.getFirstName())
+                .setLastName(invite.getLastName())
+                .setEmail(invite.getEmail());
         modelAndView.addObject("user", user);
         modelAndView.addObject("inviteId", inviteId);
         modelAndView.setViewName("invite");
@@ -75,11 +71,7 @@ public class LoginController {
             modelAndView.addObject("inviteId", inviteId);
             modelAndView.setViewName("invite");
         } else {
-            Invite invite = userInviteRepository.getOne(UUID.fromString(inviteId));
-            Set<Role> roles = new HashSet<>(invite.getRoles());
-            user.setRoles(roles);
-            userService.saveUser(user);
-            userInviteRepository.delete(invite);
+            userInviteService.registerUser(user, inviteId);
             modelAndView.addObject("email", user.getEmail());
             modelAndView.setViewName("login");
         }

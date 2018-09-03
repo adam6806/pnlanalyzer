@@ -15,20 +15,19 @@ public class TrialBalanceReport {
     private Long id;
 
     @Column
-    @NotEmpty(message = "Please provide a Company Name")
+    @NotEmpty(message = "Please provide a name")
     private String name;
 
+    @OrderBy
     @Column
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "trialBalanceReport")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "tbr_file_id")
     private Set<LineItem> lineItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
     private Company company;
 
     public Long getId() {

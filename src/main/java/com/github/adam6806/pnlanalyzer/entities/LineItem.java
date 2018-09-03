@@ -18,6 +18,7 @@ public class LineItem {
     @Column(name = "line_item_id")
     private Long id;
 
+    @OrderBy
     @Column
     private String description;
 
@@ -28,7 +29,6 @@ public class LineItem {
     private Double debit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tbr_file_id")
     private TrialBalanceReport trialBalanceReport;
 
     public LineItem() {
