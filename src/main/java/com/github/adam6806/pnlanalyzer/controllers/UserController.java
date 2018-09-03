@@ -152,7 +152,7 @@ public class UserController {
         }
         existing.setRoles(newRoles);
         existing.setName(user.getName()).setLastName(user.getLastName()).setEmail(user.getEmail());
-        userService.saveUser(existing);
+        userRepository.save(existing);
         redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("User was successfully updated"));
         modelAndView.setViewName("redirect:usermanagement");
         return modelAndView;
