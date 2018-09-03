@@ -12,16 +12,24 @@ public class LineItem {
 
     @Transient
     private static DecimalFormat decimalFormat = new DecimalFormat("$###,###.##");
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "line_item_id")
     private Long id;
+
     @Column
     private String description;
+
     @Column
     private Double credit;
+
     @Column
     private Double debit;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tbr_file_id")
+    private TrialBalanceReport trialBalanceReport;
 
     public LineItem() {
         description = "";
@@ -29,44 +37,57 @@ public class LineItem {
         debit = 0.0;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public LineItem setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public LineItem setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public Double getCredit() {
         return credit;
     }
 
-    public void setCredit(Double credit) {
+    public LineItem setCredit(Double credit) {
         this.credit = credit;
-    }
-
-    public String getCreditString() {
-        return decimalFormat.format(getCredit());
+        return this;
     }
 
     public Double getDebit() {
         return debit;
     }
 
-    public void setDebit(Double debit) {
+    public LineItem setDebit(Double debit) {
         this.debit = debit;
+        return this;
+    }
+
+    public TrialBalanceReport getTrialBalanceReport() {
+        return trialBalanceReport;
+    }
+
+    public LineItem setTrialBalanceReport(TrialBalanceReport trialBalanceReport) {
+        this.trialBalanceReport = trialBalanceReport;
+        return this;
+    }
+
+    public String getCreditString() {
+        return decimalFormat.format(getCredit());
     }
 
     public String getDebitString() {
         return decimalFormat.format(getDebit());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public boolean equals(LineItem lineItem) {

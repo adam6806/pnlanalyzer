@@ -20,19 +20,51 @@ public class Role {
     @Column(name = "role")
     private String role;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "roles")
     private Set<User> users;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "roles")
+    private Set<Invite> invites;
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public Role setId(long id) {
         this.id = id;
+        return this;
     }
 
     public String getRole() {
         return role;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public Role setUsers(Set<User> users) {
+        this.users = users;
+        return this;
+    }
+
+    public Set<Invite> getInvites() {
+        return invites;
+    }
+
+    public Role setInvites(Set<Invite> invites) {
+        this.invites = invites;
+        return this;
     }
 
     public enum Roles {ROLE_ADMIN, ROLE_USER}
