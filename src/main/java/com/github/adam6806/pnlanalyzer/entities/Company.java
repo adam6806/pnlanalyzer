@@ -17,8 +17,9 @@ public class Company {
     @NotEmpty(message = "*Please provide the company name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id")
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "company")
     private Set<TrialBalanceReport> trialBalanceReport;
 
     public Long getId() {

@@ -34,8 +34,16 @@ public class Invite {
     @Column(name = "admin_last_name")
     private String adminLastName;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "invite_role", joinColumns = @JoinColumn(name = "invite_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "invite_role",
+            joinColumns = {@JoinColumn(name = "invite_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
     private Set<Role> roles;
 
     public UUID getId() {

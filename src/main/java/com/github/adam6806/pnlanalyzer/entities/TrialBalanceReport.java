@@ -13,16 +13,21 @@ public class TrialBalanceReport {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "tbr_file_id")
     private Long id;
+
     @Column
     @NotEmpty(message = "Please provide a Company Name")
     private String name;
+
     @Column
     @Temporal(TemporalType.DATE)
     private Date date;
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tbr_file_id")
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "trialBalanceReport")
     private Set<LineItem> lineItems;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
