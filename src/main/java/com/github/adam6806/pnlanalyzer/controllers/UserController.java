@@ -6,7 +6,6 @@ import com.github.adam6806.pnlanalyzer.forms.PasswordUpdateForm;
 import com.github.adam6806.pnlanalyzer.forms.ProfileUpdateForm;
 import com.github.adam6806.pnlanalyzer.repositories.RoleRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
-import com.github.adam6806.pnlanalyzer.services.UserServiceImpl;
 import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +33,12 @@ public class UserController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final UserServiceImpl userService;
 
     @Autowired
-    private UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserServiceImpl userService) {
+    private UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
-        this.userService = userService;
     }
 
     @RequestMapping(value = "/admin/usermanagement", method = RequestMethod.GET)
@@ -63,7 +60,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView getUserProfile() {
+    public ModelAndView getUserProfile(@ModelAttribute Message message) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(auth.getName());
         ProfileUpdateForm profileUpdateForm = new ProfileUpdateForm();
@@ -72,13 +69,14 @@ public class UserController {
         profileUpdateForm.setLastName(user.getLastName());
         profileUpdateForm.setUserId(user.getId());
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", message);
         modelAndView.addObject("profileUpdateForm", profileUpdateForm);
         modelAndView.setViewName("profile");
         return modelAndView;
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@Valid ProfileUpdateForm profileUpdateForm, BindingResult bindingResult) {
+    public ModelAndView updateProfile(@Valid ProfileUpdateForm profileUpdateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
         if (bindingResult.hasErrors()) {
@@ -89,10 +87,9 @@ public class UserController {
             user.setLastName(profileUpdateForm.getLastName());
             user.setEmail(profileUpdateForm.getEmail());
             userRepository.save(user);
-            modelAndView.addObject("message", new Message().setSuccessMessage("Your profile was successfully updated."));
+            redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Your profile was successfully updated."));
         }
-        modelAndView.addObject("profileUpdateForm", profileUpdateForm);
-        modelAndView.setViewName("profile");
+        modelAndView.setViewName("redirect:/profile");
         return modelAndView;
     }
 
@@ -113,15 +110,18 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView();
 
+        User user = userRepository.getOne(passwordUpdateForm.getUserId());
+        if (!passwordEncoder.matches(passwordUpdateForm.getPassword(), user.getPassword())) {
+            bindingResult.rejectValue("password", "error.passwordUpdateForm", "Password does not match existing passwor.");
+        }
+
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("passwordUpdateForm", passwordUpdateForm);
             modelAndView.setViewName("profile/updatepassword");
         } else {
-            User user = userRepository.getOne(passwordUpdateForm.getUserId());
             user.setPassword(passwordEncoder.encode(passwordUpdateForm.getPassword2()));
             userRepository.save(user);
             redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Your profile was successfully updated."));
-            modelAndView.setViewName("redirect:");
+            modelAndView.setViewName("redirect:/profile");
         }
         return modelAndView;
     }
@@ -143,7 +143,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         User existing = userRepository.getOne(user.getId());
         if (Strings.isNotBlank(user.getPassword())) {
-            existing.setPassword(user.getPassword());
+            existing.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         Set<Role> newRoles = new HashSet<>();
         for (String selectedRole : selectedRoles) {
