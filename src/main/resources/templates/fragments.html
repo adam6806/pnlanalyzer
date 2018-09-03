@@ -23,8 +23,8 @@
                 <icon th:id="${field} + 'Icon'" class="fa fa-eye"></icon>
             </button>
         </div>
+        <div th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="invalid-feedback"></div>
     </div>
-    <div th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="invalid-feedback"></div>
 </div>
 
 <div th:fragment="hiddenField (field)" class="form-group">
