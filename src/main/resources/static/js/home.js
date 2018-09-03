@@ -106,7 +106,7 @@ function validateAlphaNumeric(input, when, target) {
 }
 
 function validateEmail(input, when, target) {
-    var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var pattern = /^.+@.+\..+$/;
     var message = "*Email must be a valid email address.";
     if (when === 'now') {
         return validate(pattern, input, message, target);
