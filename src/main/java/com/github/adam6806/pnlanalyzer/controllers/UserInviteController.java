@@ -1,12 +1,9 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
 import com.github.adam6806.pnlanalyzer.entities.Invite;
-import com.github.adam6806.pnlanalyzer.entities.Role;
 import com.github.adam6806.pnlanalyzer.entities.User;
-import com.github.adam6806.pnlanalyzer.repositories.RoleRepository;
-import com.github.adam6806.pnlanalyzer.repositories.UserInviteRepository;
-import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
-import com.github.adam6806.pnlanalyzer.services.SendGridEmailService;
+import com.github.adam6806.pnlanalyzer.services.RoleService;
+import com.github.adam6806.pnlanalyzer.services.UserInviteService;
 import com.github.adam6806.pnlanalyzer.services.UserService;
 import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,33 +19,27 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Controller
 public class UserInviteController {
 
-    private final UserInviteRepository userInviteRepository;
-    private final RoleRepository roleRepository;
-    private final SendGridEmailService sendGridEmailService;
-    private final UserRepository userRepository;
+    private final UserInviteService userInviteService;
+    private final RoleService roleService;
     private final UserService userService;
 
     @Autowired
-    public UserInviteController(UserInviteRepository userInviteRepository, RoleRepository roleRepository, SendGridEmailService sendGridEmailService, UserRepository userRepository, UserService userService) {
-        this.userInviteRepository = userInviteRepository;
-        this.roleRepository = roleRepository;
-        this.sendGridEmailService = sendGridEmailService;
-        this.userRepository = userRepository;
+    public UserInviteController(UserInviteService userInviteService, RoleService roleService, UserService userService) {
+        this.userInviteService = userInviteService;
+        this.roleService = roleService;
         this.userService = userService;
     }
 
     @RequestMapping(value = "/admin/invite", method = RequestMethod.GET)
     public ModelAndView getInvites(@ModelAttribute Message message) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("invites", userInviteRepository.findAll());
-        modelAndView.addObject("roles", roleRepository.findAll());
+        modelAndView.addObject("invites", userInviteService.findAllUserInvites());
+        modelAndView.addObject("roles", roleService.findAllRoles());
         modelAndView.addObject("message", message);
         modelAndView.setViewName("admin/invite");
         return modelAndView;
@@ -59,7 +50,7 @@ public class UserInviteController {
         ModelAndView modelAndView = new ModelAndView();
         Invite invite = new Invite();
         modelAndView.addObject("invite", invite);
-        modelAndView.addObject("allRoles", roleRepository.findAll());
+        modelAndView.addObject("allRoles", roleService.findAllRoles());
         modelAndView.setViewName("admin/invite/add");
         return modelAndView;
     }
@@ -67,7 +58,7 @@ public class UserInviteController {
     @RequestMapping(value = "/admin/invite/add", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid Invite invite, BindingResult bindingResult, @RequestParam String[] selectedRoles, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView();
-        Invite inviteExists = userInviteRepository.findInviteByEmail(invite.getEmail());
+        Invite inviteExists = userInviteService.findUserInviteByEmail(invite.getEmail());
         if (inviteExists != null) {
             bindingResult
                     .rejectValue("email", "error.user",
@@ -80,21 +71,12 @@ public class UserInviteController {
                             "*There is already a user registered with the email provided");
         }
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("roles", roleRepository.findAll());
+            modelAndView.addObject("roles", roleService.findAllRoles());
             modelAndView.setViewName("admin/invite/add");
         } else {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User admin = userRepository.findByEmail(auth.getName());
-            invite.setAdminFirstName(admin.getName());
-            invite.setAdminLastName(admin.getLastName());
-            Set<Role> newRoles = new HashSet<>();
-            for (String selectedRole : selectedRoles) {
-                Role role = roleRepository.findByRole(selectedRole);
-                newRoles.add(role);
-            }
-            invite.setRoles(new HashSet<>(newRoles));
-            Invite savedInvite = userInviteRepository.save(invite);
-            sendGridEmailService.sendUserInvite(savedInvite);
+            User admin = userService.findUserByEmail(auth.getName());
+            userInviteService.createAndSendUserInvite(inviteExists, admin, selectedRoles);
             redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Invite has been created and sent."));
             modelAndView.setViewName("redirect:/admin/invite");
         }
@@ -103,7 +85,7 @@ public class UserInviteController {
 
     @RequestMapping(value = "/admin/invite/delete", method = RequestMethod.POST)
     public ModelAndView getUserManagement(@RequestParam UUID inviteId, RedirectAttributes redirectAttributes) {
-        userInviteRepository.deleteById(inviteId);
+        userInviteService.deleteUserInviteById(inviteId);
         ModelAndView modelAndView = new ModelAndView();
         redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Invite was deleted successfully."));
         modelAndView.setViewName("redirect:/admin/invite");

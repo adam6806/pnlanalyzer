@@ -40,10 +40,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="trialBalanceReport : ${trialbalancereports}">
-            <td scope="row" th:text="${trialBalanceReport.getName()}">Doe</td>
-            <td th:text="${trialBalanceReport.getDate()}">Doe</td>
-            <td th:text="${trialBalanceReport.getCompany().getName()}"></td>
+        <tr th:each="trialBalanceReports : ${trialbalancereports}">
+            <td scope="row" th:text="${trialBalanceReports.getName()}">Doe</td>
+            <td th:text="${trialBalanceReports.getDate()}">Doe</td>
+            <td th:text="${trialBalanceReports.getCompany().getName()}"></td>
             <td>
                 <div class="btn-group mx-auto dropleft">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
@@ -52,22 +52,22 @@
                     </button>
                     <div class="dropdown-menu">
                         <form action="/trialbalancereport/lineitem" method="GET">
-                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReports.getId()}"/>
                             <button type="submit" class="btn btn-primary dropdown-item"><i class="fa fa-eye"></i>&nbsp;&nbsp;View
                                 Line Items
                             </button>
                         </form>
                         <form action="/trialbalancereport/createjournalentries" method="GET">
-                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReports.getId()}"/>
                             <button type="submit" class="btn text-success dropdown-item"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create
                                 Journal Entries
                             </button>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" th:id="${trialBalanceReport.getId()}" action="/trialbalancereport" method="POST">
-                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReport.getId()}"/>
+                        <form sec:authorize="hasAuthority('ROLE_ADMIN')" th:id="${trialBalanceReports.getId()}" action="/trialbalancereport" method="POST">
+                            <input type="hidden" name="trialbalancereportId" th:value="${trialBalanceReports.getId()}"/>
                         </form>
-                        <button th:onclick="|deleteModal('${trialBalanceReport.getId()}', 'Are you sure you want to delete this Trial Balance Report? This action is irreversible.')|"
+                        <button th:onclick="|deleteModal('${trialBalanceReports.getId()}', 'Are you sure you want to delete this Trial Balance Report? This action is irreversible.')|"
                                 class="btn btn-danger dropdown-item text-danger">
                             <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
                         </button>

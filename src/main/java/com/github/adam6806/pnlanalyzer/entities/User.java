@@ -15,7 +15,7 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
     private String email;
@@ -24,6 +24,7 @@ public class User {
     @NotEmpty(message = "*Please provide your password")
     private String password;
 
+    @OrderBy
     @Column(name = "name")
     @NotEmpty(message = "*Please provide your first name")
     private String name;

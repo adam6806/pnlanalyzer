@@ -17,7 +17,8 @@ public class Role {
     @Column(name = "role_id")
     private long id;
 
-    @Column(name = "role")
+    @OrderBy
+    @Column(name = "role", unique = true)
     private String role;
 
     @ManyToMany(fetch = FetchType.LAZY,

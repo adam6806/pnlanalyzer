@@ -1,6 +1,7 @@
-package com.github.adam6806.pnlanalyzer.utility;
+package com.github.adam6806.pnlanalyzer.services;
 
 import com.github.adam6806.pnlanalyzer.entities.LineItem;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,9 +11,10 @@ import java.util.Set;
 /**
  * Adam on 6/17/2017.
  */
-public class DifferenceCalculator {
+@Service
+public class DifferenceCalculatorService {
 
-    public static List<LineItem> calculateDifference(Set<LineItem> previousLineItems, Set<LineItem> currentLineItems) {
+    public List<LineItem> calculateDifference(Set<LineItem> previousLineItems, Set<LineItem> currentLineItems) {
 
         List<LineItem> newLineItems = new ArrayList<>();
         Iterator<LineItem> currentIterator = currentLineItems.iterator();

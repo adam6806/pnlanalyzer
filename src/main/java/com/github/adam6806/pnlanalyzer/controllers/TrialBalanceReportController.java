@@ -3,17 +3,12 @@ package com.github.adam6806.pnlanalyzer.controllers;
 import com.github.adam6806.pnlanalyzer.entities.Company;
 import com.github.adam6806.pnlanalyzer.entities.LineItem;
 import com.github.adam6806.pnlanalyzer.entities.TrialBalanceReport;
-import com.github.adam6806.pnlanalyzer.repositories.CompanyRepository;
-import com.github.adam6806.pnlanalyzer.repositories.TrialBalanceReportRepository;
-import com.github.adam6806.pnlanalyzer.utility.DifferenceCalculator;
-import com.github.adam6806.pnlanalyzer.utility.ExcelParser;
+import com.github.adam6806.pnlanalyzer.services.CompanyService;
+import com.github.adam6806.pnlanalyzer.services.TrialBalanceReportService;
 import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,28 +20,24 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class TrialBalanceReportController {
 
-    private final TrialBalanceReportRepository trialBalanceReportRepository;
-    private final CompanyRepository companyRepository;
+    private final TrialBalanceReportService trialBalanceReportService;
+    private final CompanyService companyService;
 
     @Autowired
-    public TrialBalanceReportController(TrialBalanceReportRepository trialBalanceReportRepository, CompanyRepository companyRepository) {
-        this.trialBalanceReportRepository = trialBalanceReportRepository;
-        this.companyRepository = companyRepository;
+    public TrialBalanceReportController(TrialBalanceReportService trialBalanceReportService, CompanyService companyService) {
+        this.trialBalanceReportService = trialBalanceReportService;
+        this.companyService = companyService;
     }
 
     @RequestMapping(value = "/trialbalancereport", method = RequestMethod.GET)
     public ModelAndView getTrialbalancereports(@ModelAttribute Message message) {
         ModelAndView modelAndView = new ModelAndView();
-        List<TrialBalanceReport> trialBalanceReports = trialBalanceReportRepository.findAll();
+        List<TrialBalanceReport> trialBalanceReports = trialBalanceReportService.findAllTrialBalanceReports();
         modelAndView.addObject("trialbalancereports", trialBalanceReports);
         modelAndView.addObject("message", message);
         modelAndView.setViewName("trialbalancereport");
@@ -55,7 +46,7 @@ public class TrialBalanceReportController {
 
     @RequestMapping(value = "/trialbalancereport", method = RequestMethod.POST)
     public ModelAndView deleteTrialbalancereport(@RequestParam Long trialbalancereportId, RedirectAttributes redirectAttributes) {
-        trialBalanceReportRepository.deleteById(trialbalancereportId);
+        trialBalanceReportService.deleteTrialBalanceReportById(trialbalancereportId);
         ModelAndView modelAndView = new ModelAndView();
         redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Trial Balance Report was deleted successfully."));
         modelAndView.setViewName("redirect:/trialbalancereport");
@@ -65,7 +56,7 @@ public class TrialBalanceReportController {
     @RequestMapping(value = "/trialbalancereport/lineitem", method = RequestMethod.GET)
     public ModelAndView getLineItemsForTRIALBALANCEREPORT(@RequestParam Long trialbalancereportId) {
         ModelAndView modelAndView = new ModelAndView();
-        TrialBalanceReport trialBalanceReport = trialBalanceReportRepository.getOne(trialbalancereportId);
+        TrialBalanceReport trialBalanceReport = trialBalanceReportService.findTrialBalanceReportById(trialbalancereportId);
         modelAndView.addObject("lineitems", trialBalanceReport.getLineItems());
         modelAndView.setViewName("trialbalancereport/lineitem");
         return modelAndView;
@@ -74,7 +65,7 @@ public class TrialBalanceReportController {
     @RequestMapping(value = "/trialbalancereport/addtrialbalancereport", method = RequestMethod.GET)
     public ModelAndView getAddTrialbalancereportForm() {
         ModelAndView modelAndView = new ModelAndView();
-        List<Company> companies = companyRepository.findAll();
+        List<Company> companies = companyService.findAllCompanies();
         modelAndView.addObject("companies", companies);
         modelAndView.setViewName("trialbalancereport/addtrialbalancereport");
         return modelAndView;
@@ -86,23 +77,12 @@ public class TrialBalanceReportController {
         ModelAndView modelAndView = new ModelAndView();
 
         try {
-            String name = trialbalancereportfile.getOriginalFilename();
-            InputStream stream = trialbalancereportfile.getInputStream();
-            List<LineItem> lineItems = ExcelParser.parseExcelFile(stream);
-            String dateString = lineItems.get(0).getDescription();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yy", Locale.ENGLISH);
-            LocalDate dateTime = LocalDate.parse(dateString, formatter);
-            lineItems.remove(0);
-            TrialBalanceReport trialBalanceReport = new TrialBalanceReport();
-            trialBalanceReport.setDate(Date.valueOf(dateTime));
-            trialBalanceReport.setLineItems(new HashSet<>(lineItems));
-            trialBalanceReport.setName(name);
-            trialBalanceReport.setCompany(companyRepository.findById(companyId).get());
-            trialBalanceReportRepository.save(trialBalanceReport);
+            TrialBalanceReport trialBalanceReport = trialBalanceReportService.createTrialBalanceReport(trialbalancereportfile, companyId);
             modelAndView.setViewName("trialbalancereport/lineitem");
-            modelAndView.addObject("lineitems", lineItems);
+            modelAndView.addObject("lineitems", trialBalanceReport.getLineItems());
             return modelAndView;
         } catch (IOException | InvalidFormatException ex) {
+            // TODO Make this return an error message back to the trial balance report page.
             modelAndView.setViewName("error");
             return modelAndView;
         }
@@ -111,18 +91,14 @@ public class TrialBalanceReportController {
     @RequestMapping(value = "/trialbalancereport/createjournalentries", method = RequestMethod.GET)
     public ModelAndView createJournalEntries(@RequestParam Long trialbalancereportId, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView();
-        TrialBalanceReport current = trialBalanceReportRepository.getOne(trialbalancereportId);
-        List<TrialBalanceReport> all = trialBalanceReportRepository.findAllByCompany_Id(current.getCompany().getId());
-        all.removeIf(trialBalanceReport -> trialBalanceReport.getDate().compareTo(current.getDate()) >= 0);
+        List<TrialBalanceReport> all = trialBalanceReportService.getPreviousTrialBalanceReports(trialbalancereportId);
         if (all.isEmpty()) {
             redirectAttributes.addFlashAttribute(new Message().setErrorMessage("No Trial Balance Reports exist prior to the selected Trial Balance Report for this company."));
             modelAndView.setViewName("redirect:/trialbalancereport");
             return modelAndView;
         }
-        Comparator<TrialBalanceReport> comparator = Comparator.comparing(TrialBalanceReport::getDate);
-        all.sort(comparator.reversed());
         modelAndView.addObject("trialbalancereports", all);
-        modelAndView.addObject("currentTbrId", current.getId());
+        modelAndView.addObject("currentTbrId", trialbalancereportId);
         modelAndView.setViewName("trialbalancereport/createjournalentries");
         return modelAndView;
     }
@@ -130,7 +106,7 @@ public class TrialBalanceReportController {
     @RequestMapping(value = "/trialbalancereport/journalentries", method = RequestMethod.GET)
     public ModelAndView getJournalEntryLineItems(@RequestParam Long prevTbr, @RequestParam Long currentTbr) {
         ModelAndView modelAndView = new ModelAndView();
-        List<LineItem> lineItems = createJournalEntryLineItems(prevTbr, currentTbr);
+        List<LineItem> lineItems = trialBalanceReportService.createJournalEntries(prevTbr, currentTbr);
         modelAndView.addObject("lineitems", lineItems);
         modelAndView.addObject("prevTbrId", prevTbr);
         modelAndView.addObject("currentTbrId", currentTbr);
@@ -141,25 +117,6 @@ public class TrialBalanceReportController {
     @RequestMapping(value = "/trialbalancereport/downloadjournalentry", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadFile(@RequestParam Long prevTbr, @RequestParam Long currentTbr) throws IOException {
 
-        TrialBalanceReport current = trialBalanceReportRepository.getOne(currentTbr);
-        List<LineItem> calculatedDifference = createJournalEntryLineItems(prevTbr, currentTbr);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(current.getDate());
-        int month = calendar.get(Calendar.MONTH) + 1;
-        String fileName = month + "-" + calendar.get(Calendar.YEAR) + "-" + current.getCompany().getName() + "-TBRResult.iif";
-
-        Resource resource = new InputStreamResource(ExcelParser.generateJournalEntries(calculatedDifference, current));
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                .body(resource);
-    }
-
-    private List<LineItem> createJournalEntryLineItems(Long prevTbr, Long currentTbr) {
-
-        TrialBalanceReport previous = trialBalanceReportRepository.getOne(prevTbr);
-        TrialBalanceReport current = trialBalanceReportRepository.getOne(currentTbr);
-        return DifferenceCalculator.calculateDifference(previous.getLineItems(), current.getLineItems());
+        return trialBalanceReportService.createJournalEntryFile(prevTbr, currentTbr);
     }
 }

@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
 import com.github.adam6806.pnlanalyzer.entities.Company;
-import com.github.adam6806.pnlanalyzer.repositories.CompanyRepository;
+import com.github.adam6806.pnlanalyzer.services.CompanyService;
 import com.github.adam6806.pnlanalyzer.utility.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,16 +19,17 @@ import java.util.List;
 @Controller
 public class CompanyController {
 
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
     @Autowired
-    public CompanyController(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
     }
+
 
     @RequestMapping(value = "/company", method = RequestMethod.GET)
     public ModelAndView getCompanies(@ModelAttribute Message message) {
-        List<Company> companies = companyRepository.findAll();
+        List<Company> companies = companyService.findAllCompanies();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("company");
         modelAndView.addObject("companies", companies);
@@ -38,7 +39,7 @@ public class CompanyController {
 
     @RequestMapping(value = "/company", method = RequestMethod.POST)
     public ModelAndView deleteCompany(@RequestParam Long companyId, RedirectAttributes redirectAttributes) {
-        companyRepository.deleteById(companyId);
+        companyService.deleteCompanyById(companyId);
 
         ModelAndView modelAndView = new ModelAndView();
         Message message = new Message();
@@ -65,7 +66,7 @@ public class CompanyController {
             modelAndView.addObject("company", company);
             modelAndView.setViewName("company/addcompany");
         } else {
-            companyRepository.save(company);
+            companyService.saveCompany(company);
             redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Company was added successfully."));
             modelAndView.setViewName("redirect:/company");
         }
@@ -74,7 +75,7 @@ public class CompanyController {
 
     @RequestMapping(value = "/company/editcompany", method = RequestMethod.GET)
     public ModelAndView editCompany(@RequestParam Long companyId) {
-        Company company = companyRepository.findById(companyId).get();
+        Company company = companyService.findCompanyById(companyId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("company", company);
         modelAndView.setViewName("company/editcompany");
@@ -88,7 +89,7 @@ public class CompanyController {
             modelAndView.addObject("company", company);
             modelAndView.setViewName("company/editcompany");
         } else {
-            companyRepository.save(company);
+            companyService.saveCompany(company);
             Message message = new Message();
             message.setSuccessMessage("Company was edited successfully.");
             redirectAttributes.addFlashAttribute(message);
