@@ -58,22 +58,23 @@ function initFormValidation(formId) {
 
             $('form input').each(function () {
 
-                    var input = $(this);
-                    var type = input.attr("type");
+                var input = $(this);
+                var type = input.attr("type");
                 var fieldIsValid = false;
-                    if (type === 'text') {
-                        fieldIsValid = validateAlphaNumeric(input, 'now', this);
-                    } else if (type === 'email') {
-                        fieldIsValid = validateEmail(input, 'now', this);
-                    } else if (type === 'password') {
-                        fieldIsValid = validatePassword(input, 'now', this);
-                    }
+                if (type === 'text') {
+                    fieldIsValid = validateAlphaNumeric(input, 'now', this);
+                } else if (type === 'email') {
+                    fieldIsValid = validateEmail(input, 'now', this);
+                } else if (type === 'password') {
+                    fieldIsValid = validatePassword(input, 'now', this);
+                } else {
+                    fieldIsValid = true;
+                }
 
                 if (isValid && !fieldIsValid) {
                     isValid = fieldIsValid;
                 }
-                }
-            );
+            });
 
             if (!isValid) {
                 event.preventDefault();
