@@ -11,7 +11,7 @@
 <section layout:fragment="content">
     <h1 class="h2 border-bottom mb-4 text-center">Create Invite</h1>
     <div class="row justify-content-center">
-        <form class="col-lg-8 col-md-9 col-sm-10" th:action="@{/admin/invite/add}" th:object="${invite}" method="post">
+        <form id="inviteAddForm" class="col-lg-8 col-md-9 col-sm-10" th:action="@{/admin/invite/add}" th:object="${invite}" method="post">
 
             <div th:replace="fragments :: formField (field='firstName', label = 'First Name', type = 'text')"></div>
             <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
@@ -31,6 +31,11 @@
             <a class="btn btn-md btn-secondary btn-block" role="button" href="/admin/invite">Back to Invites</a>
         </form>
     </div>
+    <script>
+        $(document).ready(function () {
+            initFormValidation('inviteAddForm');
+        });
+    </script>
 </section>
 </body>
 </html>
