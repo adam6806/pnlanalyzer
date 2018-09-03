@@ -54,20 +54,24 @@ function initFormValidation(formId) {
         var submit = $(this);
         submit.click(function (event) {
 
-            var isValid = false;
+            var isValid = true;
 
-            $('form input').each(
-                function () {
+            $('form input').each(function () {
 
                     var input = $(this);
                     var type = input.attr("type");
+                var fieldIsValid = false;
                     if (type === 'text') {
-                        isValid = validateAlphaNumeric(input, 'now', this);
+                        fieldIsValid = validateAlphaNumeric(input, 'now', this);
                     } else if (type === 'email') {
-                        isValid = validateEmail(input, 'now', this);
+                        fieldIsValid = validateEmail(input, 'now', this);
                     } else if (type === 'password') {
-                        isValid = validatePassword(input, 'now', this);
+                        fieldIsValid = validatePassword(input, 'now', this);
                     }
+
+                if (isValid && !fieldIsValid) {
+                    isValid = fieldIsValid;
+                }
                 }
             );
 
