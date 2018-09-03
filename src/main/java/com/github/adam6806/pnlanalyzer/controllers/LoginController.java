@@ -4,7 +4,7 @@ import com.github.adam6806.pnlanalyzer.entities.Invite;
 import com.github.adam6806.pnlanalyzer.entities.Role;
 import com.github.adam6806.pnlanalyzer.entities.User;
 import com.github.adam6806.pnlanalyzer.repositories.UserInviteRepository;
-import com.github.adam6806.pnlanalyzer.services.UserService;
+import com.github.adam6806.pnlanalyzer.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.HashSet;
@@ -22,11 +23,11 @@ import java.util.UUID;
 @Controller
 public class LoginController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final UserInviteRepository userInviteRepository;
 
     @Autowired
-    public LoginController(UserService userService, UserInviteRepository userInviteRepository) {
+    public LoginController(UserServiceImpl userService, UserInviteRepository userInviteRepository) {
         this.userService = userService;
         this.userInviteRepository = userInviteRepository;
     }
@@ -61,6 +62,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/invite/accept", method = RequestMethod.POST)
+    @Transactional
     public ModelAndView createUserFromInvite(@Valid User user, BindingResult bindingResult, @RequestParam String inviteId) {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByEmail(user.getEmail());

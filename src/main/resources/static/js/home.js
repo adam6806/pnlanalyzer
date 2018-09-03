@@ -38,6 +38,9 @@ function initFormValidation(formId) {
         function () {
             var input = $(this);
             var type = input.attr("type");
+            if (this.id.includes("password")) {
+                type = 'password';
+            }
             if (type === 'text') {
                 validateAlphaNumeric(input);
             } else if (type === 'email') {
@@ -61,6 +64,9 @@ function initFormValidation(formId) {
                 var input = $(this);
                 var type = input.attr("type");
                 var fieldIsValid = false;
+                if (this.id.includes("password")) {
+                    type = 'password';
+                }
                 if (type === 'text') {
                     fieldIsValid = validateAlphaNumeric(input, 'now', this);
                 } else if (type === 'email') {
