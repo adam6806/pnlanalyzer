@@ -16,7 +16,7 @@
 <body class="text-center">
 
 <form th:action="@{/login}" method="POST" class="form-signin">
-    <h1 class="h3 mb-3 font-weight-normal">Welcome</h1>
+    <img th:src="@{/images/logo.png}" class="img-fluid mb-4" alt="">
 
     <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}" class="form-control mb-3"/>
     <div class="input-group mb-3">
