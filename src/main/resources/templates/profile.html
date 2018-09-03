@@ -23,7 +23,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-9 col-sm-10">
             <div class="mb-5">
-                <form action="/profile" method="post" th:object="${profileUpdateForm}">
+                <form id="profileUpdateform" action="/profile" method="post" th:object="${profileUpdateForm}">
                     <div th:replace="fragments :: formField (field='firstName', label = 'First Name', type = 'text')"></div>
                     <div th:replace="fragments :: formField (field='lastName', label = 'Last Name', type = 'text')"></div>
                     <div th:replace="fragments :: formField (field='email', label = 'Email', type = 'email')"></div>
@@ -34,6 +34,11 @@
             <a class="btn btn-primary" href="/profile/updatepassword" role="button">Update Password</a>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            initFormValidation('profileUpdateform');
+        });
+    </script>
 </section>
 </body>
 </html>

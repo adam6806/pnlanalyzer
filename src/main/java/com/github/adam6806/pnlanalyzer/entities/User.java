@@ -23,7 +23,7 @@ public class User {
 
     @Column(name = "password")
     @NotEmpty(message = "*Please provide your password")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "*Your password must be at least 8 characters long and contain a lower case letter, uppercase letter, and a number.")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[\\w!@#$%^&*]{8,}$", message = "*Your password must be at least 8 characters long and contain a lower case letter, uppercase letter, and a number. Optionally it can also contain one of these special characters !@#$%^&*")
     private String password;
 
     @Column(name = "name")

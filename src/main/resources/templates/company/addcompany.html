@@ -12,12 +12,18 @@
 <section layout:fragment="content">
     <h1 class="h2 border-bottom mb-4 text-center">Add Company</h1>
     <div class="row justify-content-center">
-        <form class="col-lg-8 col-md-9 col-sm-10" action="/company/addcompany" method="post" th:object="${company}">
+        <form id="addCompanyForm" novalidate class="col-lg-8 col-md-9 col-sm-10" action="/company/addcompany" method="post" th:object="${company}">
             <div th:replace="fragments :: formField (field='name', label = 'Company Name', type = 'text')"></div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <a class="btn btn-secondary" href="/company">Cancel</a>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            initFormValidation('addCompanyForm');
+        });
+    </script>
 </section>
 </body>
 </html>
