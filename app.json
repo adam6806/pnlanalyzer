@@ -1,5 +1,5 @@
 {
-  "name": "PNL Analyzer",
+  "name": "Remote Quality Bookkeeping",
   "description": "A Web Application that allows the upload and analysis of PNL Files",
   "addons": [
     "heroku-postgresql"
