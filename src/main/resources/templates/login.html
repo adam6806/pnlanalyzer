@@ -1,39 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml">
+      lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>PNL Analyzer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="/webjars/font-awesome/5.2.0/js/all.js"></script>
+    <title>Remote Quality Bookkeeping</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 
-<body>
-<form th:action="@{/registration}" method="get">
-    <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
-</form>
+<body class="text-center">
 
-<div class="container">
-    <div class="row">
-        <div class="col-12 text-center">
-            <img th:src="@{/images/login.jpg}" width="300" height="300" alt="Logo"/>
+<form th:action="@{/login}" method="POST" class="form-signin">
+    <img th:src="@{/images/logo.png}" class="img-fluid mb-4" alt="">
+
+    <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}" class="form-control mb-3"/>
+    <div class="input-group mb-3">
+        <input type="password" th:placeholder="Password" id="password" name="password" class="form-control"/>
+        <div class="input-group-append">
+            <button type="button" onclick="togglePassword('password', 'passwordIcon')" class="btn btn-secondary form-control">
+                <icon id="passwordIcon" class="fa fa-eye"></icon>
+            </button>
         </div>
     </div>
-    <form th:action="@{/login}" method="POST" class="form-signin">
-        <h3 class="form-signin-heading" th:text="Welcome"></h3>
-        <br/>
 
-        <input type="text" id="email" name="email" th:placeholder="Email" th:value="${email}"
-               class="form-control"/> <br/>
-        <input type="password" th:placeholder="Password"
-               id="password" name="password" class="form-control"/> <br/>
+    <div align="center" th:if="${param.error}">
+        <p class="alert-danger">Email or Password invalid, please verify. <br><a href="/passwordreset/request">Forgot Password?</a></p>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
+</form>
 
-        <div align="center" th:if="${param.error}">
-            <p style="font-size: 20px; color: #FF1C19;">Email or Password invalid, please verify</p>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
-                th:text="Login"></button>
-    </form>
-</div>
+<script>
+    function togglePassword(inputId, passwordIconId) {
+        var input = $('#' + inputId);
+        var icon = $('#' + passwordIconId);
+        if (input.prop('type') === 'password') {
+            input.prop('type', 'text');
+            icon.addClass('fa-eye-slash').removeClass('fa-eye');
+        } else {
+            input.prop('type', 'password');
+            icon.addClass('fa-eye').removeClass('fa-eye-slash');
+        }
+    }
+</script>
+
 </body>
 </html>

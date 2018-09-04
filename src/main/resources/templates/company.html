@@ -5,14 +5,31 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Admin Page</title>
+    <title>Company Management</title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Companies</h1>
-    <table class="table table-striped table-bordered table-hover init-datatable">
-        <caption>List of users</caption>
+    <div class="row">
+        <div class="col" th:if="${message}">
+            <div th:if="${message.getErrorMessage()}" class="alert alert-danger top-message text-center" role="alert">
+                <span th:text="${message.getErrorMessage()}"></span>
+            </div>
+            <div th:if="${message.getSuccessMessage()}" class="alert alert-success top-message text-center" role="alert">
+                <span th:text="${message.getSuccessMessage()}"></span>
+            </div>
+        </div>
+    </div>
+    <h1 class="h2 mb-4 text-center"><i class="fa fa-building"></i>&nbsp;&nbsp;Companies</h1>
+    <div class="row mb-2">
+        <div class="col">
+            <form action="/company/addcompany" method="get">
+                <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add a Company</button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered table-hover init-datatable display nowrap" style="width:100%">
+        <caption>List of companies</caption>
         <thead>
         <tr>
             <th scope="col">Name</th>
@@ -23,29 +40,32 @@
         <tr th:each="company : ${companies}">
             <td scope="row" th:text="${company.getName()}">Doe</td>
             <td>
-                <div class="row ml-2">
-                    <form class="mx-1" action="/company/editcompany" method="GET">
-                        <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                        <button type="submit" class="btn btn-primary">Edit</button>
-                    </form>
-                    <form sec:authorize="hasAuthority('ROLE_ADMIN')" class="mx-1 deleteCompanyForm" action="/company"
-                          method="POST">
-                        <input type="hidden" name="companyId" th:value="${company.getId()}"/>
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <div class="btn-group mx-auto dropleft">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <form action="/company/editcompany" method="GET">
+                            <input type="hidden" name="companyId" th:value="${company.getId()}"/>
+                            <button type="submit" class="btn btn-primary dropdown-item"><i class="fas fa-pen"></i>&nbsp;&nbsp;Edit</button>
+                        </form>
+                        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                            <div class="dropdown-divider"></div>
+                            <form th:id="${company.getId()}" action="/company" method="POST">
+                                <input type="hidden" name="companyId" th:value="${company.getId()}"/>
+                            </form>
+                            <button th:onclick="|deleteModal('${company.getId()}', 'Are you sure you want to delete this company? Deleting this company will also delete all Trial Balance Reports associated with this company. This action is irreversible.')|"
+                                    class="btn btn-danger dropdown-item text-danger">
+                                <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-    <form action="/company/addcompany" method="get">
-        <button type="submit" class="btn btn-primary">Add a Company</button>
-    </form>
-    <script>
-        $('.deleteCompanyForm').submit(function () {
-            return confirm("Are you sure you want to delete this Company? This action is irreversible");
-        });
-    </script>
 </section>
 </body>
 </html>

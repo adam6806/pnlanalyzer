@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="formField (field, label, type)" class="form-group position-relative">
+    <label th:for="${field}" th:text="${label}"></label>
+    <input th:type="${type}" th:field="*{__${field}__}" th:placeholder="${label}" class="form-control"
+           th:errorclass="is-invalid" th:id="${field}"/>
+    <div class="valid-feedback feedback-icon">
+        <i class="fa fa-check"></i>
+    </div>
+    <div class="invalid-feedback feedback-icon">
+        <i class="fa fa-times"></i>
+    </div>
+    <span th:id="${field} + 'InvalidText'" class="invalid-feedback"></span>
+    <div th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="invalid-feedback"></div>
+</div>
+
+<div th:fragment="passwordField (field, label)" class="form-group position-relative">
+    <label th:for="${field}" th:text="${label}"></label>
+    <div class="input-group">
+        <input type="password" th:field="*{__${field}__}" th:placeholder="${label}" class="form-control"
+               th:errorclass="is-invalid" th:id="${field}"/>
+        <div class="input-group-append">
+            <button type="button" th:onclick="'togglePassword(\'' + ${field} + '\', \'' + ${field} + 'Icon\');'" class="btn btn-secondary form-control">
+                <i th:id="${field} + 'Icon'" class="fa fa-eye"></i>
+            </button>
+        </div>
+        <div class="valid-feedback feedback-icon password">
+            <i class="fa fa-check"></i>
+        </div>
+        <div class="invalid-feedback feedback-icon password">
+            <i class="fa fa-times"></i>
+        </div>
+        <span th:id="${field} + 'InvalidText'" class="invalid-feedback"></span>
+        <div th:if="${#fields.hasErrors('__${field}__')}" th:errors="*{__${field}__}" class="invalid-feedback"></div>
+    </div>
+</div>
+
+<div th:fragment="hiddenField (field)" class="form-group">
+    <input type="hidden" th:field="*{__${field}__}"/>
+</div>
+</body>
+</html>

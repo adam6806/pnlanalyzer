@@ -1,5 +1,20 @@
-.admin-message-text {
-    font-style: normal;
-    font-size: 22px;
-    color: #004080;
+.valid-feedback.feedback-icon,
+.invalid-feedback.feedback-icon {
+    position: absolute;
+    width: auto;
+    top: 40px;
+    right: 10px;
+    margin-top: 0;
 }
+
+.valid-feedback.feedback-icon.password,
+.invalid-feedback.feedback-icon.password {
+    position: absolute;
+    width: auto;
+    top: 10px;
+    right: 54px;
+    margin-top: 0;
+}
+
+
+

@@ -4,18 +4,19 @@
       layout:decorate="~{home.html}">
 
 <head>
-    <title>Add Trial Balance Report</title>
+    <title>Trial Balance Report</title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <h1 class="h2 border-bottom">Create a Journal Entry Report</h1>
-    <div class="row">
-        <form class="col-4" action="/trialbalancereport/journalentries" enctype="multipart/form-data"
+    <h1 class="h2 border-bottom mb-4 text-center">Create a Journal Entry Report</h1>
+    <div class="row justify-content-center">
+        <form class="col-lg-8 col-md-9 col-sm-10" action="/trialbalancereport/journalentries"
+              enctype="multipart/form-data"
               method="get">
             <div class="form-group">
                 <label for="prevTbr">Previous Trial Balance Report</label>
-                <select class="form-control" id="prevTbr" name="prevTbr">
+                <select class="selectpicker form-control" id="prevTbr" name="prevTbr" data-live-search="true">
                     <option th:each="trialbalancereport : ${trialbalancereports}"
                             th:value="${trialbalancereport.getId()}"
                             th:text="${trialbalancereport.getDate()}"></option>
@@ -23,7 +24,7 @@
             </div>
             <input type="hidden" name="currentTbr" th:value="${currentTbrId}"/>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a class="btn btn-danger" href="/trialbalancereport">Cancel</a>
+            <a class="btn btn-secondary" href="/trialbalancereport">Cancel</a>
         </form>
     </div>
 </section>
