@@ -18,8 +18,7 @@ public class Company {
     @NotEmpty(message = "*Please provide the company name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<TrialBalanceReport> trialBalanceReports;
 
     public Long getId() {
@@ -43,6 +42,9 @@ public class Company {
     }
 
     public void setTrialBalanceReports(Set<TrialBalanceReport> trialBalanceReports) {
+        for (TrialBalanceReport trialBalanceReport : trialBalanceReports) {
+            trialBalanceReport.setCompany(this);
+        }
         this.trialBalanceReports = trialBalanceReports;
     }
 }

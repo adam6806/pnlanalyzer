@@ -23,11 +23,11 @@ public class TrialBalanceReport {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "tbr_file_id")
+    @OneToMany(mappedBy = "trialBalanceReport", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<LineItem> lineItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
     public Long getId() {
@@ -59,6 +59,9 @@ public class TrialBalanceReport {
     }
 
     public void setLineItems(Set<LineItem> lineItems) {
+        for (LineItem lineItem : lineItems) {
+            lineItem.setTrialBalanceReport(this);
+        }
         this.lineItems = lineItems;
     }
 
