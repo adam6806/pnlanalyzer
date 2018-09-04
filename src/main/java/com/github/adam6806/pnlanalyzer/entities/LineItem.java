@@ -29,6 +29,7 @@ public class LineItem {
     private Double debit;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tbr_file_id", nullable = false)
     private TrialBalanceReport trialBalanceReport;
 
     public LineItem() {
