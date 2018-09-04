@@ -76,7 +76,7 @@ public class UserInviteController {
         } else {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User admin = userService.findUserByEmail(auth.getName());
-            userInviteService.createAndSendUserInvite(inviteExists, admin, selectedRoles);
+            userInviteService.createAndSendUserInvite(invite, admin, selectedRoles);
             redirectAttributes.addFlashAttribute(new Message().setSuccessMessage("Invite has been created and sent."));
             modelAndView.setViewName("redirect:/admin/invite");
         }
