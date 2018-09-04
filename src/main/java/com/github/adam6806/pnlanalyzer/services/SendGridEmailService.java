@@ -56,7 +56,7 @@ public class SendGridEmailService {
         Mail mail = new Mail();
 
         Email fromEmail = new Email();
-        fromEmail.setName("PNL Analyzer");
+        fromEmail.setName("Remote Quality Bookkeeping");
         fromEmail.setEmail("asmith0935@gmail.com");
         mail.setFrom(fromEmail);
 
@@ -84,7 +84,7 @@ public class SendGridEmailService {
         Mail mail = new Mail();
 
         Email fromEmail = new Email();
-        fromEmail.setName("PNL Analyzer");
+        fromEmail.setName("Remote Quality Bookkeeping");
         fromEmail.setEmail("asmith0935@gmail.com");
         mail.setFrom(fromEmail);
 
