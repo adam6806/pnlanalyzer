@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.repositories;
 
-import com.github.adam6806.pnlanalyzer.entities.PasswordReset;
+import com.github.adam6806.pnlanalyzer.domain.PasswordReset;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

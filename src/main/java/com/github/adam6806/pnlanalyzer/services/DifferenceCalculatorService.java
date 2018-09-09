@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.services;
 
-import com.github.adam6806.pnlanalyzer.entities.LineItem;
+import com.github.adam6806.pnlanalyzer.domain.LineItem;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

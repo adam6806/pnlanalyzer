@@ -1,8 +1,8 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
-import com.github.adam6806.pnlanalyzer.entities.Company;
-import com.github.adam6806.pnlanalyzer.entities.LineItem;
-import com.github.adam6806.pnlanalyzer.entities.TrialBalanceReport;
+import com.github.adam6806.pnlanalyzer.domain.Company;
+import com.github.adam6806.pnlanalyzer.domain.LineItem;
+import com.github.adam6806.pnlanalyzer.domain.TrialBalanceReport;
 import com.github.adam6806.pnlanalyzer.services.CompanyService;
 import com.github.adam6806.pnlanalyzer.services.TrialBalanceReportService;
 import com.github.adam6806.pnlanalyzer.utility.Message;

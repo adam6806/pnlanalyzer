@@ -1,9 +1,9 @@
 package com.github.adam6806.pnlanalyzer.services;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.adam6806.pnlanalyzer.entities.Invite;
-import com.github.adam6806.pnlanalyzer.entities.PasswordReset;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.Invite;
+import com.github.adam6806.pnlanalyzer.domain.PasswordReset;
+import com.github.adam6806.pnlanalyzer.domain.User;
 import com.sendgrid.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

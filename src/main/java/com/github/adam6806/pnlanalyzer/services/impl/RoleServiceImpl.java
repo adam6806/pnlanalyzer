@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.services.impl;
 
-import com.github.adam6806.pnlanalyzer.entities.Role;
+import com.github.adam6806.pnlanalyzer.domain.Role;
 import com.github.adam6806.pnlanalyzer.repositories.RoleRepository;
 import com.github.adam6806.pnlanalyzer.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
