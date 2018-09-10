@@ -10,6 +10,16 @@
 
 <body>
 <section layout:fragment="content">
+    <div class="row">
+        <div class="col" th:if="${message != null}">
+            <div th:if="${message.errorMessage != null}" class="alert alert-danger top-message text-center" role="alert">
+                <span th:text="${message.errorMessage}"></span>
+            </div>
+            <div th:if="${message.getSuccessMessage() != null}" class="alert alert-success top-message text-center" role="alert">
+                <span th:text="${message.getSuccessMessage()}"></span>
+            </div>
+        </div>
+    </div>
     <h1 class="h2 border-bottom mb-4 text-center" th:text="${prevTbrId != null} ? 'Journal Entries' : 'Line Items'"></h1>
     <div class="d-flex flex-row mb-2">
         <div class="p-0" th:style="${prevTbrId == null} ? '' : 'display:none'">

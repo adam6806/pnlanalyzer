@@ -3,6 +3,7 @@ package com.github.adam6806.pnlanalyzer.services;
 import com.github.adam6806.pnlanalyzer.domain.LineItem;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -18,10 +19,10 @@ public class DifferenceCalculatorService {
         Iterator<LineItem> currentIterator = currentLineItems.iterator();
         LineItem newTotalLineItem = new LineItem();
         newTotalLineItem.setDescription("Total");
-        Double totalDebit = 0.0;
-        Double totalCredit = 0.0;
-        Double total4000Debit = 0.0;
-        Double total4000Credit = 0.0;
+        BigDecimal totalDebit = BigDecimal.valueOf(0.0);
+        BigDecimal totalCredit = BigDecimal.valueOf(0.0);
+        BigDecimal total4000Debit = BigDecimal.valueOf(0.0);
+        BigDecimal total4000Credit = BigDecimal.valueOf(0.0);
         while (currentIterator.hasNext()) {
             LineItem currentLineItem = currentIterator.next();
             if (currentLineItem.getDescription().startsWith("4") || wantedAccounts.parallelStream().anyMatch(currentLineItem.getDescription()::contains)) {
@@ -32,11 +33,11 @@ public class DifferenceCalculatorService {
                     if (currentLineItem.equals(previousLineItem)) {
                         LineItem newLineItem = currentLineItem.minus(previousLineItem);
                         if (newLineItem.getDescription().startsWith("4")) {
-                            total4000Credit += newLineItem.getCredit();
-                            total4000Debit += newLineItem.getDebit();
+                            total4000Credit = total4000Credit.add(newLineItem.getCredit());
+                            total4000Debit = total4000Debit.add(newLineItem.getDebit());
                         }
-                        totalDebit += newLineItem.getDebit();
-                        totalCredit += newLineItem.getCredit();
+                        totalDebit = totalDebit.add(newLineItem.getDebit());
+                        totalCredit = totalCredit.add(newLineItem.getCredit());
                         newLineItems.add(newLineItem);
                         previousIterator.remove();
                         lineItemNotFound = false;
@@ -45,20 +46,20 @@ public class DifferenceCalculatorService {
                 }
                 if (lineItemNotFound) {
                     if (currentLineItem.getDescription().startsWith("4")) {
-                        total4000Credit += currentLineItem.getCredit();
-                        total4000Debit += currentLineItem.getDebit();
+                        total4000Credit = total4000Credit.add(currentLineItem.getCredit());
+                        total4000Debit = total4000Debit.add(currentLineItem.getDebit());
                     }
                     newLineItems.add(currentLineItem);
-                    totalDebit += currentLineItem.getDebit();
-                    totalCredit += currentLineItem.getCredit();
+                    totalDebit = totalDebit.add(currentLineItem.getDebit());
+                    totalCredit = totalCredit.add(currentLineItem.getCredit());
                 }
             }
         }
 
         LineItem incomeClearing = new LineItem().setCredit(total4000Debit).setDebit(total4000Credit).setDescription("1060 · Income Clearing");
         newLineItems.add(incomeClearing);
-        newTotalLineItem.setDebit(totalDebit + total4000Credit);
-        newTotalLineItem.setCredit(totalCredit + total4000Debit);
+        newTotalLineItem.setDebit(totalDebit.add(total4000Credit));
+        newTotalLineItem.setCredit(totalCredit.add(total4000Debit));
         newLineItems.add(newTotalLineItem);
 
         return newLineItems;
