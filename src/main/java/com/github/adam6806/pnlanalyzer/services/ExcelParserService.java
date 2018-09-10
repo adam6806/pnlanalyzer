@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public class ExcelParserService {
                     isLineItem = true;
                     lineItem.setDescription(cell.getStringCellValue());
                 } else if (cell.getAddress().getColumn() == debitColumn && isLineItem) {
-                    lineItem.setDebit(cell.getNumericCellValue());
+                    lineItem.setDebit(BigDecimal.valueOf(cell.getNumericCellValue()));
                 } else if (cell.getAddress().getColumn() == creditColumn && isLineItem) {
-                    lineItem.setCredit(cell.getNumericCellValue());
+                    lineItem.setCredit(BigDecimal.valueOf(cell.getNumericCellValue()));
                 }
             }
             String description = lineItem.getDescription().trim();
@@ -77,7 +78,7 @@ public class ExcelParserService {
         csvPrinter.printRecord("!SPL", "SPLID", "TRNSTYPE", "DATE", "ACCNT", "CLASS", "AMOUNT", "DOCNUM", "MEMO");
         csvPrinter.printRecord("!ENDTRNS", "", "", "", "", "", "", "", "");
 
-        double total = 0.0;
+        BigDecimal total = BigDecimal.valueOf(0.0);
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
         lineItems.sort(Comparator.comparing(LineItem::getDescription));
@@ -93,17 +94,17 @@ public class ExcelParserService {
                     firstColumn = "TRNS";
                 }
 
-                Double amount = lineItem.getDebit() - lineItem.getCredit();
+                BigDecimal amount = lineItem.getDebit().subtract(lineItem.getCredit());
 
                 if (lineItem.getDescription().startsWith("4")) {
-                    total += amount;
+                    total = total.add(amount);
                 }
 
                 csvPrinter.printRecord(firstColumn, "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), lineItem.getDescription(), "", decimalFormat.format(amount), "", "");
             }
         }
         String incomeClearing = new String("1060 · Income Clearing".getBytes());
-        csvPrinter.printRecord("SPL", "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), incomeClearing, "", decimalFormat.format(0 - total), "", "");
+        csvPrinter.printRecord("SPL", "", "GENERAL JOURNAL", simpleDateFormat.format(current.getDate()), incomeClearing, "", decimalFormat.format(BigDecimal.valueOf(0.0).subtract(total)), "", "");
         csvPrinter.printRecord("ENDTRNS", "", "", "", "", "", "", "", "");
 
         byte badByte = (byte) ("Â".getBytes()[0] - 1);

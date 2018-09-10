@@ -54,10 +54,11 @@ public class TrialBalanceReportController {
     }
 
     @RequestMapping(value = "/trialbalancereport/lineitem", method = RequestMethod.GET)
-    public ModelAndView getLineItemsForTRIALBALANCEREPORT(@RequestParam Long trialbalancereportId) {
+    public ModelAndView getLineItemsForTRIALBALANCEREPORT(@RequestParam Long trialbalancereportId, @ModelAttribute Message message) {
         ModelAndView modelAndView = new ModelAndView();
         TrialBalanceReport trialBalanceReport = trialBalanceReportService.findTrialBalanceReportById(trialbalancereportId);
         modelAndView.addObject("lineitems", trialBalanceReport.getLineItems());
+        modelAndView.addObject("message", message);
         modelAndView.setViewName("trialbalancereport/lineitem");
         return modelAndView;
     }
@@ -107,6 +108,10 @@ public class TrialBalanceReportController {
     public ModelAndView getJournalEntryLineItems(@RequestParam Long prevTbr, @RequestParam Long currentTbr) {
         ModelAndView modelAndView = new ModelAndView();
         List<LineItem> lineItems = trialBalanceReportService.createJournalEntries(prevTbr, currentTbr);
+        LineItem total = lineItems.stream().filter(lineItem -> lineItem.getDescription().contains("Total")).findFirst().get();
+        if (!total.getCredit().equals(total.getDebit())) {
+            modelAndView.addObject("message", new Message().setErrorMessage("Journal Entries are not balanced and will not import to Quickbooks. Please check accounts for misplaced amounts."));
+        }
         modelAndView.addObject("lineitems", lineItems);
         modelAndView.addObject("prevTbrId", prevTbr);
         modelAndView.addObject("currentTbrId", currentTbr);
