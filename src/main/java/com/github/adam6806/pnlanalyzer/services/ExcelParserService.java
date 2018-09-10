@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.services;
 
-import com.github.adam6806.pnlanalyzer.entities.LineItem;
-import com.github.adam6806.pnlanalyzer.entities.TrialBalanceReport;
+import com.github.adam6806.pnlanalyzer.domain.LineItem;
+import com.github.adam6806.pnlanalyzer.domain.TrialBalanceReport;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;

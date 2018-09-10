@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.services.impl;
 
-import com.github.adam6806.pnlanalyzer.entities.Role;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.Role;
+import com.github.adam6806.pnlanalyzer.domain.User;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;
 import com.github.adam6806.pnlanalyzer.services.UserService;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.services.impl;
 
-import com.github.adam6806.pnlanalyzer.entities.Company;
+import com.github.adam6806.pnlanalyzer.domain.Company;
 import com.github.adam6806.pnlanalyzer.repositories.CompanyRepository;
 import com.github.adam6806.pnlanalyzer.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;

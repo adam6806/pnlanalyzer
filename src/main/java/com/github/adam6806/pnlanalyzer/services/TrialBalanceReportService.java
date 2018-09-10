@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.services;
 
-import com.github.adam6806.pnlanalyzer.entities.LineItem;
-import com.github.adam6806.pnlanalyzer.entities.TrialBalanceReport;
+import com.github.adam6806.pnlanalyzer.domain.LineItem;
+import com.github.adam6806.pnlanalyzer.domain.TrialBalanceReport;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;

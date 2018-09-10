@@ -1,8 +1,8 @@
 package com.github.adam6806.pnlanalyzer.configuration;
 
-import com.github.adam6806.pnlanalyzer.entities.Invite;
-import com.github.adam6806.pnlanalyzer.entities.Role;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.Invite;
+import com.github.adam6806.pnlanalyzer.domain.Role;
+import com.github.adam6806.pnlanalyzer.domain.User;
 import com.github.adam6806.pnlanalyzer.repositories.RoleRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserInviteRepository;
 import com.github.adam6806.pnlanalyzer.repositories.UserRepository;

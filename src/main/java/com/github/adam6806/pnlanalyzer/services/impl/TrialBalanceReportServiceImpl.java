@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.services.impl;
 
-import com.github.adam6806.pnlanalyzer.entities.LineItem;
-import com.github.adam6806.pnlanalyzer.entities.TrialBalanceReport;
+import com.github.adam6806.pnlanalyzer.domain.LineItem;
+import com.github.adam6806.pnlanalyzer.domain.TrialBalanceReport;
 import com.github.adam6806.pnlanalyzer.repositories.CompanyRepository;
 import com.github.adam6806.pnlanalyzer.repositories.TrialBalanceReportRepository;
 import com.github.adam6806.pnlanalyzer.services.DifferenceCalculatorService;

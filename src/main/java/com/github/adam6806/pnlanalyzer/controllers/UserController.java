@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
-import com.github.adam6806.pnlanalyzer.entities.Role;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.Role;
+import com.github.adam6806.pnlanalyzer.domain.User;
 import com.github.adam6806.pnlanalyzer.forms.PasswordUpdateForm;
 import com.github.adam6806.pnlanalyzer.forms.ProfileUpdateForm;
 import com.github.adam6806.pnlanalyzer.services.RoleService;

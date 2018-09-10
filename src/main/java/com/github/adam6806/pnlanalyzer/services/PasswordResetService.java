@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.services;
 
-import com.github.adam6806.pnlanalyzer.entities.PasswordReset;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.PasswordReset;
+import com.github.adam6806.pnlanalyzer.domain.User;
 
 public interface PasswordResetService {
 

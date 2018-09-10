@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.controllers;
 
-import com.github.adam6806.pnlanalyzer.entities.Invite;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.Invite;
+import com.github.adam6806.pnlanalyzer.domain.User;
 import com.github.adam6806.pnlanalyzer.services.UserInviteService;
 import com.github.adam6806.pnlanalyzer.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
