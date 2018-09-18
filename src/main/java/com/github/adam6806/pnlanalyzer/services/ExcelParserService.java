@@ -83,7 +83,7 @@ public class ExcelParserService {
 
         lineItems.sort(Comparator.comparing(LineItem::getDescription));
 
-        List<String> wantedAccounts = Arrays.asList("5060", "5070", "1210", "1215");
+        List<String> wantedAccounts = Arrays.asList();
 
         boolean isFirst = true;
         for (LineItem lineItem : lineItems) {
