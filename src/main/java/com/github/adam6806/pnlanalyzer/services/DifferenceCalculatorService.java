@@ -14,7 +14,7 @@ public class DifferenceCalculatorService {
 
     public List<LineItem> calculateDifference(Set<LineItem> previousLineItems, Set<LineItem> currentLineItems) {
 
-        List<String> wantedAccounts = Arrays.asList("5060", "5070", "1210", "1215");
+        List<String> wantedAccounts = Arrays.asList();
         List<LineItem> newLineItems = new ArrayList<>();
         Iterator<LineItem> currentIterator = currentLineItems.iterator();
         LineItem newTotalLineItem = new LineItem();
