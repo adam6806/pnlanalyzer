@@ -1,7 +1,7 @@
 package com.github.adam6806.pnlanalyzer.services;
 
-import com.github.adam6806.pnlanalyzer.entities.Invite;
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.Invite;
+import com.github.adam6806.pnlanalyzer.domain.User;
 
 import java.util.List;
 import java.util.UUID;

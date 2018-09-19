@@ -1,6 +1,7 @@
-package com.github.adam6806.pnlanalyzer.entities;
+package com.github.adam6806.pnlanalyzer.domain;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
@@ -23,10 +24,10 @@ public class LineItem {
     private String description;
 
     @Column
-    private Double credit;
+    private BigDecimal credit;
 
     @Column
-    private Double debit;
+    private BigDecimal debit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tbr_file_id", nullable = false)
@@ -34,8 +35,8 @@ public class LineItem {
 
     public LineItem() {
         description = "";
-        credit = 0.0;
-        debit = 0.0;
+        credit = BigDecimal.valueOf(0);
+        debit = BigDecimal.valueOf(0);
     }
 
     public Long getId() {
@@ -56,20 +57,20 @@ public class LineItem {
         return this;
     }
 
-    public Double getCredit() {
+    public BigDecimal getCredit() {
         return credit;
     }
 
-    public LineItem setCredit(Double credit) {
+    public LineItem setCredit(BigDecimal credit) {
         this.credit = credit;
         return this;
     }
 
-    public Double getDebit() {
+    public BigDecimal getDebit() {
         return debit;
     }
 
-    public LineItem setDebit(Double debit) {
+    public LineItem setDebit(BigDecimal debit) {
         this.debit = debit;
         return this;
     }
@@ -98,8 +99,8 @@ public class LineItem {
     public LineItem minus(LineItem prevLineItem) {
         LineItem result = new LineItem();
         result.setDescription(getDescription());
-        result.setCredit(getCredit() - prevLineItem.getCredit());
-        result.setDebit(getDebit() - prevLineItem.getDebit());
+        result.setCredit(getCredit().subtract(prevLineItem.getCredit()));
+        result.setDebit(getDebit().subtract(prevLineItem.getDebit()));
         return result;
     }
 }

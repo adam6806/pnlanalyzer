@@ -1,6 +1,6 @@
 package com.github.adam6806.pnlanalyzer.services;
 
-import com.github.adam6806.pnlanalyzer.entities.User;
+import com.github.adam6806.pnlanalyzer.domain.User;
 
 import java.util.List;
 

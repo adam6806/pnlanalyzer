@@ -1,4 +1,4 @@
-package com.github.adam6806.pnlanalyzer.entities;
+package com.github.adam6806.pnlanalyzer.domain;
 
 import javax.persistence.*;
 import java.util.Set;
