@@ -5,9 +5,7 @@ $(document).ready(function () {
 
     setTimeout(function () {
         $(".top-message").fadeOut("slow");
-    }, 5000);
-
-
+    }, 10000);
 });
 
 function deleteModal(id, message) {
@@ -40,6 +38,8 @@ function initFormValidation(formId) {
             var type = input.attr("type");
             if (this.id.includes("password")) {
                 type = 'password';
+            } else if (this.id.includes("currency")) {
+                type = 'currency';
             }
             if (type === 'text') {
                 validateAlphaNumeric(input);
@@ -47,6 +47,8 @@ function initFormValidation(formId) {
                 validateEmail(input);
             } else if (type === 'password') {
                 validatePassword(input);
+            } else if (type === 'currency') {
+                validateCurrency(input)
             }
 
             //alert('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
@@ -66,6 +68,8 @@ function initFormValidation(formId) {
                 var fieldIsValid = false;
                 if (this.id.includes("password")) {
                     type = 'password';
+                } else if (this.id.includes("currency")) {
+                    type = 'currency';
                 }
                 if (type === 'text') {
                     fieldIsValid = validateAlphaNumeric(input, 'now', this);
@@ -73,6 +77,8 @@ function initFormValidation(formId) {
                     fieldIsValid = validateEmail(input, 'now', this);
                 } else if (type === 'password') {
                     fieldIsValid = validatePassword(input, 'now', this);
+                } else if (type === 'currency') {
+                    fieldIsValid = validateCurrency(input, 'now', this)
                 } else {
                     fieldIsValid = true;
                 }
@@ -125,6 +131,16 @@ function validateEmail(input, when, target) {
 function validatePassword(input, when, target) {
     var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\w!@#$%^&*]{8,}$/;
     var message = "*Your password must be at least 8 characters long and contain a lower case letter, uppercase letter, and a number. Optionally it can also contain one of these special characters !@#$%^&*";
+    if (when === 'now') {
+        return validate(pattern, input, message, target);
+    } else {
+        return validateOnKeyUp(pattern, input, message);
+    }
+}
+
+function validateCurrency(input, when, target) {
+    var pattern = /^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9][0-9])?$/;
+    var message = "*Currency must take one of the following forms: 1234 1,234 1234.12 1,234.12 $1234 $1,234 $1234.12 $1,234.12";
     if (when === 'now') {
         return validate(pattern, input, message, target);
     } else {
