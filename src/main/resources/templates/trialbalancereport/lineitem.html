@@ -47,6 +47,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Credit</th>
                     <th scope="col">Debit</th>
+                    <th th:if="${prevTbrId == null}" scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,21 @@
                     <td th:text="${lineitem.getDescription()}">Doe</td>
                     <td th:text="${lineitem.getCreditString()}"></td>
                     <td th:text="${lineitem.getDebitString()}"></td>
+                    <td th:if="${prevTbrId == null}">
+                        <div class="btn-group mx-auto dropleft">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu">
+                                <form action="/lineitem/editlineitem" method="GET">
+                                    <input type="hidden" name="lineItemId" th:value="${lineitem.getId()}"/>
+                                    <button type="submit" class="btn btn-primary dropdown-item"><i class="fa fa-pen"></i>&nbsp;&nbsp;Edit Line Item
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
