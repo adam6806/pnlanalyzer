@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}">
+
+<head>
+    <title>Edit Line Item</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="h2 border-bottom mb-4 text-center">Edit Line Item</h1>
+    <div class="row justify-content-center">
+        <form id="editLineItemForm" class="col-lg-8 col-md-9 col-sm-10" action="/lineitem/editlineitem" method="post" th:object="${lineItemForm}">
+            <div th:replace="fragments :: formField (field='currencyCredit', label = 'Credit Value', type = 'text')"></div>
+            <div th:replace="fragments :: formField (field='currencyDebit', label = 'Debit Value', type = 'text')"></div>
+            <div th:replace="fragments :: hiddenField (field='lineItemId')"></div>
+            <div th:replace="fragments :: hiddenField (field='trialBalanceReportId')"></div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-secondary" th:href="'/trialbalancereport/lineitem?trialbalancereportId=' + ${lineItemForm.getTrialBalanceReportId()}">Cancel</a>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            initFormValidation('editLineItemForm');
+        });
+    </script>
+</section>
+</body>
+</html>
